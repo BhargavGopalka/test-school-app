@@ -11,6 +11,15 @@ export class ApiManagerService {
   constructor(private http: HttpClient) {
   }
 
+  deleteAPI(endpoint: string): Observable<any> {
+    return this.http.delete<any>(API.baseURL + endpoint, {headers: this.httpOptions})
+      .pipe(
+        tap((response) => {
+        }),
+        catchError(this.onCatch)
+      );
+  }
+
   getAPI(endpoint: string, queryParams?, searchParams?): Observable<any> {
     return this.http.get<any>(API.baseURL + endpoint, {headers: this.httpOptions})
       .pipe(

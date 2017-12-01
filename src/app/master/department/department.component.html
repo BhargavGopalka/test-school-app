@@ -1,0 +1,25 @@
+<div>
+  <h3 align="left">Department Management</h3>
+  <button>Add Department</button>
+</div>
+
+<br><br>
+<table>
+  <tr>
+    <th>Sr. No</th>
+    <th>Dept Name</th>
+    <th>Status</th>
+    <th>Action</th>
+  </tr>
+
+  <tr *ngFor="let dept of deptList; let i = index">
+    <td>{{i + 1}}</td>
+    <td>{{dept.name}}</td>
+    <td>
+      <button (click)="onChangeStatus(dept._id, dept.isEnable)">{{dept.isEnable ? true : false}}</button>
+    </td>
+    <td>
+      <button>Edit</button>
+    </td>
+  </tr>
+</table>
