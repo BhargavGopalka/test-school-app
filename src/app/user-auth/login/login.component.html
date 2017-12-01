@@ -1,0 +1,18 @@
+<br><br>
+<form [formGroup]="loginForm" (submit)="onSubmitLoginForm(loginForm.value, loginForm.valid)">
+  <div>
+    <a>Username :</a>
+    <input type="text" name="email" id="email" placeholder="E-mail" formControlName="email">
+    <div *ngIf="emailValidation(loginForm.controls['email'])">{{emailErrorMessage}}</div>
+  </div><br><br>
+
+  <div>
+    <a>Password :</a>
+    <input type="password" name="password" id="password" placeholder="Password" formControlName="password">
+    <div *ngIf="passwordValidation(loginForm.controls['password'])">{{passwordErrorMessage}}</div>
+  </div><br><br>
+
+  <div>
+    <button type="submit" value="Login">Login</button>
+  </div>
+</form>
