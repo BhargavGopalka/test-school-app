@@ -3,7 +3,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {API} from '../constants/constants';
 import {Observable} from 'rxjs/Observable';
 import {catchError, tap} from 'rxjs/operators';
-import {Token} from "../tokens/tokens";
+import {Token} from '../tokens/tokens';
 
 @Injectable()
 export class ApiManagerService {
