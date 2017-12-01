@@ -64,11 +64,10 @@ export class LoginComponent implements OnInit {
 
   onSubmitLoginForm(formValue, valid) {
     if (valid === true) {
-      this.apiManager.postPublicAPI(API.LOGIN, formValue)
+      this.apiManager.postAPI(API.LOGIN, formValue)
         .subscribe((response) => {
-            console.log(response);
             const token = response.payload.token;
-            sessionStorage.setItem('Authorization', 'bearer ' + token);
+            sessionStorage.setItem('Authorization', token);
             if (response.status === 200) {
               this.routes.navigate(['dashboard']);
             }
