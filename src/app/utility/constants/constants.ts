@@ -3,6 +3,7 @@ export class API {
   public static LOGIN = 'adminLogin';
   public static DASHBOARD = 'dashboard';
   public static DEPARTMENT = 'department';
+  public static COURSE = 'course';
 }
 
 export class Constant {

@@ -4,6 +4,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {AuthGuard} from '../_guards/auth.guard';
 import {DepartmentComponent} from './department/department.component';
+import {CourseComponent} from "./course/course.component";
 
 const routes: Routes = [
   {
@@ -16,6 +17,11 @@ const routes: Routes = [
     component: DepartmentComponent,
     canActivate: [AuthGuard]
   },
+  {
+    path: 'course',
+    component: CourseComponent,
+    canActivate: [AuthGuard]
+  }
 ];
 
 @NgModule({
