@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Department} from './department.model';
 import {ApiManagerService} from '../../utility/api-manager/api-manager.service';
-import {API} from '../../utility/constants/constants';
+import {API, Constant} from '../../utility/constants/constants';
 
 @Component({
   selector: 'app-department',
@@ -10,7 +10,12 @@ import {API} from '../../utility/constants/constants';
 })
 export class DepartmentComponent implements OnInit {
 
-  deptList: Department[] = [];
+  page = 1;
+  recordsPerPage = Constant.RECORDS_PER_PAGE;
+  totalRecords: number;
+
+  deptList: Department[];
+  statusMessage = 'Loading Data. Please wait ...';
 
   constructor(private apiManager: ApiManagerService) {
   }
@@ -22,21 +27,23 @@ export class DepartmentComponent implements OnInit {
   getDeptData() {
     this.apiManager.getAPI(API.DEPARTMENT)
       .subscribe((response) => {
-        this.deptList = response.payload.data;
-      });
+          this.deptList = response.payload.data;
+        },
+        (error) => {
+          console.error(error);
+          this.statusMessage = 'Problem with the service, please try later.';
+        });
   }
 
-  onChangeStatus(id: string, isEnable: boolean) {
-    const enableDisable = !isEnable;
-    this.apiManager.deleteAPI(API.DEPARTMENT + '/' + id + '/' + enableDisable)
+  onChangeStatus(dept: Department) {
+    this.apiManager.deleteAPI(API.DEPARTMENT + '/' + dept._id + '/' + !dept.isEnable)
       .subscribe((response) => {
           this.getDeptData();
+        },
+        (error) => {
+          dept.isEnable = !dept.isEnable;
         }
-        // ,
-        // (error) => {
-        //   isEnable = !isEnable;
-        // }
-        );
+      );
   }
 
 }

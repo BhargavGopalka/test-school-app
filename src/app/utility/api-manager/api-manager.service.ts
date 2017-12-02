@@ -4,11 +4,22 @@ import {API} from '../constants/constants';
 import {Observable} from 'rxjs/Observable';
 import {catchError, tap} from 'rxjs/operators';
 import {Token} from '../tokens/tokens';
+import 'rxjs/add/observable/throw';
 
 @Injectable()
 export class ApiManagerService {
 
   constructor(private http: HttpClient) {
+  }
+
+  /* APIs */
+  putAPI(endpoint: string): Observable<any> {
+    return this.http.put<any>(API.baseURL + endpoint, {headers: this.httpOptions})
+      .pipe(
+        tap(() => {
+        }),
+        catchError(this.onCatch)
+      );
   }
 
   deleteAPI(endpoint: string): Observable<any> {
@@ -47,9 +58,7 @@ export class ApiManagerService {
   }
 
   /* Catch an Error */
-  private onCatch(error: any, caught: Observable<any>): Observable<any> {
+  private onCatch(error: Response): Observable<any> {
     return Observable.throw(error);
   }
 }
-
-

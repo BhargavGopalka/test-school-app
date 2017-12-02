@@ -4,3 +4,8 @@ export class API {
   public static DASHBOARD = 'dashboard';
   public static DEPARTMENT = 'department';
 }
+
+export class Constant {
+  public static PAGINATION_ARRAY = [10, 20, 30];
+  public static RECORDS_PER_PAGE = Constant.PAGINATION_ARRAY[0];
+}

@@ -23,7 +23,7 @@ import {AuthGuard} from './_guards/auth.guard';
     AppRoutingModule
   ],
   providers: [AuthGuard],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {
 }

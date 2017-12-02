@@ -4,22 +4,33 @@
 </div>
 
 <br><br>
-<table>
-  <tr>
-    <th>Sr. No</th>
-    <th>Dept Name</th>
-    <th>Status</th>
-    <th>Action</th>
-  </tr>
+<div>
+  <table>
+    <tr>
+      <th>Sr. No</th>
+      <th>Dept Name</th>
+      <th>Status</th>
+      <th>Action</th>
+    </tr>
 
-  <tr *ngFor="let dept of deptList; let i = index">
-    <td>{{i + 1}}</td>
-    <td>{{dept.name}}</td>
-    <td>
-      <button (click)="onChangeStatus(dept._id, dept.isEnable)">{{dept.isEnable ? true : false}}</button>
-    </td>
-    <td>
-      <button>Edit</button>
-    </td>
-  </tr>
-</table>
+    <tr
+      *ngFor="let dept of deptList | paginate: { currentPage: page, itemsPerPage: recordsPerPage, totalItems: totalRecords }; let i = index">
+      <td>{{i + 1}}</td>
+      <td>{{dept.name}}</td>
+      <td>
+        <button (click)="onChangeStatus(dept)">{{dept.isEnable ? true : false}}</button>
+      </td>
+      <td>
+        <button>Edit</button>
+      </td>
+    </tr>
+
+    <tr *ngIf="!deptList">
+      <td colspan="4">
+        <h3>{{statusMessage}}</h3>
+      </td>
+    </tr>
+  </table>
+
+  <app-pagination></app-pagination>
+</div>
