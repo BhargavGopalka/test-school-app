@@ -13,8 +13,8 @@ export class ApiManagerService {
   }
 
   /* APIs */
-  putAPI(endpoint: string): Observable<any> {
-    return this.http.put<any>(API.baseURL + endpoint, {headers: this.httpOptions})
+  putAPI(endpoint: string, formValue): Observable<any> {
+    return this.http.put<any>(API.baseURL + endpoint, formValue, {headers: this.httpOptions})
       .pipe(
         tap(() => {
         }),
@@ -32,7 +32,15 @@ export class ApiManagerService {
   }
 
   getAPI(endpoint: string, queryParams?, searchParams?): Observable<any> {
-    return this.http.get<any>(API.baseURL + endpoint, {headers: this.httpOptions})
+    queryParams ? '' : queryParams = {};
+    (searchParams) ? queryParams['search'] = JSON.stringify(searchParams) : '';
+    const params = new URLSearchParams();
+    for (const key in queryParams) {
+      params.set(key, queryParams[key]);
+    }
+
+    return this.http.get<any>(API.baseURL + endpoint + '?' + params.toString(),
+      {headers: this.httpOptions})
       .pipe(
         tap((response: any) => {
         }),
@@ -40,7 +48,7 @@ export class ApiManagerService {
       );
   }
 
-  postAPI(endpoint: string, formValue, queryParams?, searchParams?): Observable<any> {
+  postAPI(endpoint: string, formValue): Observable<any> {
     return this.http.post<any>(API.baseURL + endpoint, formValue, {headers: this.httpOptions})
       .pipe(
         tap((response: any) => {

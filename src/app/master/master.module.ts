@@ -5,11 +5,14 @@ import {HeaderComponent} from './header/header.component';
 import {RouterModule} from '@angular/router';
 import {DepartmentComponent} from './department/department.component';
 import {UtilityModule} from '../utility/utility.module';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   imports: [
     CommonModule,
     UtilityModule,
+    FormsModule,
+    ReactiveFormsModule,
     RouterModule
   ],
   declarations: [DashboardComponent, HeaderComponent, DepartmentComponent],

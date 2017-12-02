@@ -1,10 +1,30 @@
-<div>
+<div *ngIf="showDataGrid">
   <h3 align="left">Department Management</h3>
-  <button>Add Department</button>
+  <button (click)="onAddEditButtonClick()">Add Department</button>
 </div>
 
 <br><br>
-<div>
+<!-- Add/Edit Table -->
+<div *ngIf="!showDataGrid">
+  <form [formGroup]="departmentFrom" (submit)="onSubmitDepartment(departmentFrom.value, departmentFrom.valid)">
+
+    <div>
+      <a>Department Name:</a>
+      <input type="text" placeholder="Enter Department Name" formControlName="name"/>
+      <div *ngIf="nameValidation(departmentFrom.controls['name'])">{{nameErrorMessage}}</div>
+    </div>
+    <br>
+
+    <div>
+      <button type="submit">{{formButtonMessage}}</button>
+      <button type="reset" (click)="onCancel()">Cancel</button>
+    </div>
+
+  </form>
+</div>
+
+<!-- Data Grid -->
+<div *ngIf="showDataGrid">
   <table>
     <tr>
       <th>Sr. No</th>
@@ -18,10 +38,10 @@
       <td>{{i + 1}}</td>
       <td>{{dept.name}}</td>
       <td>
-        <button (click)="onChangeStatus(dept)">{{dept.isEnable ? true : false}}</button>
+        <button (click)="onChangeStatus(dept)">{{dept.isEnable}}</button>
       </td>
       <td>
-        <button>Edit</button>
+        <button (click)="onAddEditButtonClick(dept)">Edit</button>
       </td>
     </tr>
 
@@ -32,5 +52,6 @@
     </tr>
   </table>
 
-  <app-pagination></app-pagination>
+  <app-pagination (pageChange)="page = $event; getDeptData()"
+  (numberChange)="onRecordsPerPageChange($event)"></app-pagination>
 </div>
