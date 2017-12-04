@@ -8,6 +8,7 @@ import {UtilityModule} from '../utility/utility.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { CourseComponent } from './course/course.component';
 import { ClassesComponent } from './classes/classes.component';
+import { FeedbackComponent } from './feedback/feedback.component';
 
 @NgModule({
   imports: [
@@ -17,7 +18,7 @@ import { ClassesComponent } from './classes/classes.component';
     ReactiveFormsModule,
     RouterModule
   ],
-  declarations: [DashboardComponent, HeaderComponent, DepartmentComponent, CourseComponent, ClassesComponent],
+  declarations: [DashboardComponent, HeaderComponent, DepartmentComponent, CourseComponent, ClassesComponent, FeedbackComponent],
   exports: [HeaderComponent]
 })
 export class MasterModule {

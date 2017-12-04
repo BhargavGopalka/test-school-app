@@ -1,0 +1,35 @@
+<!-- Data Grid -->
+<div *ngIf="showDataGrid">
+  <table>
+    <tr>
+      <th>Sr. No</th>
+      <th>Date</th>
+      <th>Professor Name</th>
+      <th>Student Name</th>
+      <th>Class Name</th>
+      <th>Action</th>
+    </tr>
+
+    <tr
+      *ngFor="let feedback of feedbackList | paginate: { currentPage: page, itemsPerPage: recordsPerPage, totalItems: totalRecords }; let i = index">
+      <td>{{i + 1}}</td>
+      <td>{{feedback.createdAt}}</td>
+      <td>{{feedback.teacher.firstName + ' ' + feedback.teacher.lastName}}</td>
+      <td>{{feedback.student.firstName + ' ' + feedback.student.lastName}}</td>
+      <td>{{feedback.student.class.name}}</td>
+
+      <td>
+        <button (click)="onViewButtonClick(feedback)">View</button>
+      </td>
+    </tr>
+
+    <tr *ngIf="!feedbackList">
+      <td colspan="6">
+        <h3>{{statusMessage}}</h3>
+      </td>
+    </tr>
+  </table>
+
+  <app-pagination (pageChange)="page = $event; getFeedbackData()"
+                  (numberChange)="onRecordsPerPageChange($event)"></app-pagination>
+</div>
