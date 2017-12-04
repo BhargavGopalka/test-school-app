@@ -1,3 +1,38 @@
+<div *ngIf="showDataGrid">
+  <h3 align="left">Course Management</h3>
+  <button (click)="onAddEditButtonClick()">Add Course</button>
+</div>
+
+<br><br>
+<!-- Add/Edit Form -->
+<div *ngIf="!showDataGrid">
+  <form [formGroup]="courseForm" (submit)="onSubmitCourse(courseForm.value, courseForm.valid)">
+
+    <div>
+      <a>Department Name:</a>
+      <select formControlName="department">
+        <option value="" disabled>Select Department</option>
+        <option *ngFor="let dept of deptList" value="{{dept._id}}">{{dept.name}}</option>
+      </select>
+      <div *ngIf="deptValidation(courseForm.controls['department'])" style="color: red">{{deptErrorMessage}}</div>
+    </div>
+    <br>
+
+    <div>
+      <a>Course Name:</a>
+      <input type="text" placeholder="Enter Course Name" formControlName="name"/>
+      <div *ngIf="courseValidation(courseForm.controls['name'])" style="color: red">{{courseErrorMessage}}</div>
+    </div>
+    <br>
+
+    <div>
+      <button type="submit">{{formButtonMessage}}</button>
+      <button type="reset" (click)="onCancel()">Cancel</button>
+    </div>
+
+  </form>
+</div>
+
 <!-- Data Grid -->
 <div *ngIf="showDataGrid">
   <table>

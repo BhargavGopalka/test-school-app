@@ -39,14 +39,14 @@ export class DepartmentComponent implements OnInit {
   }
 
   onSubmitDepartment(formValue, valid) {
-    if (this.selectedDepartment) {
-      this.apiManager.putAPI(API.DEPARTMENT + '/' + this.selectedDepartment._id, formValue)
-        .subscribe((response) => {
-          this.getDeptData();
-          this.showDataGrid = true;
-        });
-    } else {
-      if (valid) {
+    if (valid) {
+      if (this.selectedDepartment) {
+        this.apiManager.putAPI(API.DEPARTMENT + '/' + this.selectedDepartment._id, formValue)
+          .subscribe((response) => {
+            this.getDeptData();
+            this.showDataGrid = true;
+          });
+      } else {
         this.apiManager.postAPI(API.DEPARTMENT, formValue)
           .subscribe((response) => {
             this.getDeptData();
@@ -80,11 +80,7 @@ export class DepartmentComponent implements OnInit {
     this.apiManager.deleteAPI(API.DEPARTMENT + '/' + dept._id + '/' + !dept.isEnable)
       .subscribe((response) => {
           this.getDeptData();
-        },
-        (error) => {
-          dept.isEnable = !dept.isEnable;
-        }
-      );
+        });
   }
 
   onAddEditButtonClick(department?: Department) {

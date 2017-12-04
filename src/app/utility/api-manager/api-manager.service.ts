@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {API} from '../constants/constants';
 import {Observable} from 'rxjs/Observable';
 import {catchError, tap} from 'rxjs/operators';
@@ -32,14 +32,18 @@ export class ApiManagerService {
   }
 
   getAPI(endpoint: string, queryParams?, searchParams?): Observable<any> {
-    queryParams ? '' : queryParams = {};
+    queryParams ? queryParams : queryParams = {};
     (searchParams) ? queryParams['search'] = JSON.stringify(searchParams) : '';
-    const params = new URLSearchParams();
+    let params = new HttpParams();
+    // const params = new URLSearchParams();          /* Angular 4 way */
     for (const key in queryParams) {
-      params.set(key, queryParams[key]);
-    }
+      params = params.set(key, queryParams[key]);
+      // params.set(key, queryParams[key]);           /* Angular 4 way */
+      // params = params.append(key.toString(), queryParams[key].toString());
+      /* ^you can use something like this as well in Angular5, but in this one you don't need to put .toString() part inside get API */
+        }
 
-    return this.http.get<any>(API.baseURL + endpoint + '?' + params.toString(),
+    return this.http.get<any>(API.baseURL + endpoint + '?' + params.toString()  ,
       {headers: this.httpOptions})
       .pipe(
         tap((response: any) => {

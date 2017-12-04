@@ -11,7 +11,7 @@
     <div>
       <a>Department Name:</a>
       <input type="text" placeholder="Enter Department Name" formControlName="name"/>
-      <div *ngIf="nameValidation(departmentFrom.controls['name'])">{{nameErrorMessage}}</div>
+      <div *ngIf="nameValidation(departmentFrom.controls['name'])" style="color: red">{{nameErrorMessage}}</div>
     </div>
     <br>
 
