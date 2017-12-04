@@ -4,6 +4,7 @@ export class API {
   public static DASHBOARD = 'dashboard';
   public static DEPARTMENT = 'department';
   public static COURSE = 'course';
+  public static CLASS = 'class';
 }
 
 export class Constant {

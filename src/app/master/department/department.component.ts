@@ -57,9 +57,10 @@ export class DepartmentComponent implements OnInit {
   }
 
   getDeptData() {
-    this.apiManager.getAPI(API.DEPARTMENT, this.departmentParams(1))
+    this.apiManager.getAPI(API.DEPARTMENT, this.departmentParams())
       .subscribe((response) => {
           this.deptList = response.payload.data;
+          this.totalRecords = response.pager.totalRecords;
         },
         (error) => {
           this.statusMessage = 'Problem with the service, please try later.';
@@ -79,8 +80,8 @@ export class DepartmentComponent implements OnInit {
   onChangeStatus(dept: Department) {
     this.apiManager.deleteAPI(API.DEPARTMENT + '/' + dept._id + '/' + !dept.isEnable)
       .subscribe((response) => {
-          this.getDeptData();
-        });
+        this.getDeptData();
+      });
   }
 
   onAddEditButtonClick(department?: Department) {
@@ -101,9 +102,9 @@ export class DepartmentComponent implements OnInit {
   }
 
   /* Params */
-  departmentParams(pageNumber: number): any {
+  departmentParams(): any {
     return {
-      'pageNumber': pageNumber,
+      'pageNumber': this.page,
       'recordsPerPage': this.recordsPerPage
     };
   }

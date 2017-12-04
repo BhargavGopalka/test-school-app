@@ -1,0 +1,69 @@
+<div *ngIf="showDataGrid">
+  <h3 align="left">Class Management</h3>
+  <button (click)="onAddEditButtonClick()">Add Class</button>
+</div>
+
+<br><br>
+<!-- Add/Edit Form -->
+<div *ngIf="!showDataGrid">
+  <form [formGroup]="classForm" (submit)="onSubmitClass(classForm.value, classForm.valid)">
+
+    <div>
+      <a>Course Name:</a>
+      <select formControlName="course">
+        <option value="" disabled>Select Course</option>
+        <option *ngFor="let course of courseList" value="{{course._id}}">{{course.name}}</option>
+      </select>
+      <div *ngIf="courseValidation(classForm.controls['course'])" style="color: red">{{courseErrorMessage}}</div>
+    </div>
+    <br>
+
+    <div>
+      <a>Class Name:</a>
+      <input type="text" placeholder="Enter Class Name" formControlName="name"/>
+      <div *ngIf="classValidation(classForm.controls['name'])" style="color: red">{{classErrorMessage}}</div>
+    </div>
+    <br>
+
+    <div>
+      <button type="submit">{{formButtonMessage}}</button>
+      <button type="reset" (click)="onCancel()">Cancel</button>
+    </div>
+
+  </form>
+</div>
+
+<!-- Data Grid -->
+<div *ngIf="showDataGrid">
+  <table>
+    <tr>
+      <th>Sr. No</th>
+      <th>Class Name</th>
+      <th>Course Name</th>
+      <th>Status</th>
+      <th>Action</th>
+    </tr>
+
+    <tr
+      *ngFor="let class of classList | paginate: { currentPage: page, itemsPerPage: recordsPerPage, totalItems: totalRecords }; let i = index">
+      <td>{{i + 1}}</td>
+      <td>{{class.name}}</td>
+      <td>{{class.courseName}}</td>
+      <td>
+        <button (click)="onChangeStatus(class)">{{class.isEnable}}</button>
+      </td>
+      <td>
+        <button (click)="onAddEditButtonClick(class)">Edit</button>
+      </td>
+    </tr>
+
+    <tr *ngIf="!classList">
+      <td colspan="5">
+        <h3>{{statusMessage}}</h3>
+      </td>
+    </tr>
+  </table>
+
+  <app-pagination (pageChange)="page = $event; getClassData()"
+                  (numberChange)="onRecordsPerPageChange($event)"></app-pagination>
+</div>

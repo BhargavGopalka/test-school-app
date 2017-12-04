@@ -41,9 +41,9 @@ export class ApiManagerService {
       // params.set(key, queryParams[key]);           /* Angular 4 way */
       // params = params.append(key.toString(), queryParams[key].toString());
       /* ^you can use something like this as well in Angular5, but in this one you don't need to put .toString() part inside get API */
-        }
+    }
 
-    return this.http.get<any>(API.baseURL + endpoint + '?' + params.toString()  ,
+    return this.http.get<any>(API.baseURL + endpoint + '?' + params.toString(),
       {headers: this.httpOptions})
       .pipe(
         tap((response: any) => {

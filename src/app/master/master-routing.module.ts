@@ -5,6 +5,7 @@ import {DashboardComponent} from './dashboard/dashboard.component';
 import {AuthGuard} from '../_guards/auth.guard';
 import {DepartmentComponent} from './department/department.component';
 import {CourseComponent} from "./course/course.component";
+import {ClassesComponent} from "./classes/classes.component";
 
 const routes: Routes = [
   {
@@ -20,6 +21,11 @@ const routes: Routes = [
   {
     path: 'course',
     component: CourseComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'class',
+    component: ClassesComponent,
     canActivate: [AuthGuard]
   }
 ];

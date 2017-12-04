@@ -63,9 +63,10 @@ export class CourseComponent implements OnInit {
   }
 
   getCourseData() {
-    this.apiManager.getAPI(API.COURSE, this.courseParams(1))
+    this.apiManager.getAPI(API.COURSE, this.courseParams())
       .subscribe((response) => {
           this.courseList = response.payload.data;
+          this.totalRecords = response.pager.totalRecords;
         },
         (error) => {
           this.statusMessage = 'Problem with the service, please try later.';
@@ -125,9 +126,9 @@ export class CourseComponent implements OnInit {
   }
 
   /* Params */
-  courseParams(pageNumber: number): any {
+  courseParams(): any {
     return {
-      'pageNumber': pageNumber,
+      'pageNumber': this.page,
       'recordsPerPage': this.recordsPerPage
     };
   }
