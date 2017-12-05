@@ -7,6 +7,7 @@ import {DepartmentComponent} from './department/department.component';
 import {CourseComponent} from './course/course.component';
 import {ClassesComponent} from './classes/classes.component';
 import {FeedbackComponent} from './feedback/feedback.component';
+import {ReportComponent} from "./report/report.component";
 
 const routes: Routes = [
   {
@@ -32,6 +33,11 @@ const routes: Routes = [
   {
     path: 'feedback',
     component: FeedbackComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'reports',
+    component: ReportComponent,
     canActivate: [AuthGuard]
   }
 ];

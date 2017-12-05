@@ -80,6 +80,8 @@ export class FeedbackComponent implements OnInit {
   onClear() {
     this.filterStartDate = null;
     this.filterEndDate = null;
+    this.filterClass = null;
+    this.filterProfessor = [];
   }
 
   onRecordsPerPageChange(event) {
