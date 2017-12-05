@@ -6,9 +6,11 @@ import {RouterModule} from '@angular/router';
 import {DepartmentComponent} from './department/department.component';
 import {UtilityModule} from '../utility/utility.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { CourseComponent } from './course/course.component';
-import { ClassesComponent } from './classes/classes.component';
-import { FeedbackComponent } from './feedback/feedback.component';
+import {CourseComponent} from './course/course.component';
+import {ClassesComponent} from './classes/classes.component';
+import {FeedbackComponent} from './feedback/feedback.component';
+import {MatDatepickerModule, MatFormFieldModule, MatInputModule, MatNativeDateModule} from '@angular/material';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
   imports: [
@@ -16,6 +18,11 @@ import { FeedbackComponent } from './feedback/feedback.component';
     UtilityModule,
     FormsModule,
     ReactiveFormsModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatNativeDateModule,
+    BrowserAnimationsModule,
     RouterModule
   ],
   declarations: [DashboardComponent, HeaderComponent, DepartmentComponent, CourseComponent, ClassesComponent, FeedbackComponent],

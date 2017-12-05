@@ -1,5 +1,3 @@
-import {Classes} from '../classes/classes.model';
-
 export class Feedback {
   private _id: string;
   private _createdAt: string;
@@ -225,5 +223,26 @@ export class Student {
 
   set class(value: Classes) {
     this._class = value;
+  }
+}
+
+export class Classes {
+  private _classId: string;
+  private _className: string;
+
+  get classId(): string {
+    return this._classId;
+  }
+
+  set classId(value: string) {
+    this._classId = value;
+  }
+
+  get className(): string {
+    return this._className;
+  }
+
+  set className(value: string) {
+    this._className = value;
   }
 }

@@ -5,6 +5,8 @@ export class API {
   public static DEPARTMENT = 'department';
   public static COURSE = 'course';
   public static CLASS = 'class';
+  public static USER = 'user';
+  public static FEEDBACK = 'feedback';
 }
 
 export class Constant {

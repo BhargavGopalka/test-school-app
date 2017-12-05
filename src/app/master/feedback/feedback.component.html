@@ -1,3 +1,100 @@
+<div *ngIf="showDataGrid">
+  <h3 align="left">Feedback Management</h3>
+  <div>
+    <mat-form-field>
+      <input matInput [matDatepicker]="startDatePicker" placeholder="Start date" [max]="maxDate"
+             [(ngModel)]="filterStartDate">
+      <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #startDatePicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput [matDatepicker]="endDatePicker" placeholder="End date" [max]="maxDate"
+             [(ngModel)]="filterEndDate">
+      <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #endDatePicker></mat-datepicker>
+    </mat-form-field>
+
+    <select [(ngModel)]="filterClass">
+      <option value="" disabled>Select Class</option>
+      <option *ngFor="let class of classList" value="{{class._id}}">{{class.name}}</option>
+    </select>
+
+    <select [(ngModel)]="filterProfessor" multiple>
+      <!--<option (click)="selectAllProfessor()">Select All</option>-->
+      <option *ngFor="let professor of professorList" value="{{professor._id}}">{{professor.firstName + ' ' +
+        professor.lastName}}
+      </option>
+    </select>
+
+    <button type="button" (click)="onClickSearchButton()">Search</button>
+    <button type="reset" (click)="onClear()">Clear</button>
+  </div>
+</div>
+<br><br>
+
+<!-- Feedback View Form -->
+<table *ngIf="!showDataGrid">
+  <h2>Feedback</h2>
+  <fieldset disabled>
+    <tr>
+      <th>Date</th>
+      <td>{{selectedFeedback?.createdAt | date:'dd-MM-yyyy'}}</td>
+    </tr>
+
+    <tr>
+      <th>Session Start Time</th>
+      <td>{{selectedFeedback?.sessionStartTime}}</td>
+    </tr>
+
+    <tr>
+      <th>Session End Time</th>
+      <td>{{selectedFeedback?.sessionEndTime}}</td>
+    </tr>
+
+    <tr>
+      <th>Topic</th>
+      <td>{{selectedFeedback?.topic}}</td>
+    </tr>
+
+    <tr>
+      <th>Teacher</th>
+      <td>{{(selectedFeedback ? selectedFeedback.teacher.firstName : '')
+        + ' ' +
+        (selectedFeedback ? selectedFeedback.teacher.lastName : '')}}
+      </td>
+    </tr>
+
+    <tr>
+      <th>Clarity of communication?</th>
+      <td>{{selectedFeedback?.communicationClarity + ' out of 10'}}</td>
+    </tr>
+
+    <tr>
+      <th>Organization and coverage of topic?</th>
+      <td>{{selectedFeedback?.topicCoverage + ' out of 10'}}</td>
+    </tr>
+
+    <tr>
+      <th>Ability to explain concepts?</th>
+      <td>{{selectedFeedback?.explainAbility + ' out of 10'}}</td>
+    </tr>
+
+    <tr>
+      <th>Use of relevant examples, case studies, roleplay & walkthroughs?</th>
+      <td>{{selectedFeedback?.exampleUse + ' out of 10'}}</td>
+    </tr>
+
+    <tr>
+      <th>Other remarks:</th>
+      <td>{{selectedFeedback?.otherRemarks}}</td>
+    </tr>
+
+  </fieldset>
+  <br><br>
+  <button type="reset" (click)="leaveFeedbackView()">Back</button>
+</table>
+
 <!-- Data Grid -->
 <div *ngIf="showDataGrid">
   <table>
@@ -13,10 +110,10 @@
     <tr
       *ngFor="let feedback of feedbackList | paginate: { currentPage: page, itemsPerPage: recordsPerPage, totalItems: totalRecords }; let i = index">
       <td>{{i + 1}}</td>
-      <td>{{feedback.createdAt}}</td>
+      <td>{{feedback.createdAt | date:'dd-MM-yyyy'}}</td>
       <td>{{feedback.teacher.firstName + ' ' + feedback.teacher.lastName}}</td>
       <td>{{feedback.student.firstName + ' ' + feedback.student.lastName}}</td>
-      <td>{{feedback.student.class.name}}</td>
+      <td>{{feedback.student.class.className}}</td>
 
       <td>
         <button (click)="onViewButtonClick(feedback)">View</button>
