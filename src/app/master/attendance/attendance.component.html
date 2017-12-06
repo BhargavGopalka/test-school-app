@@ -1,0 +1,68 @@
+<div *ngIf="showDataGrid">
+  <h3 align="left">Attendance Management</h3>
+  <div>
+    <mat-form-field>
+      <input matInput [matDatepicker]="startDatePicker" placeholder="Start date" [max]="maxDate"
+             [(ngModel)]="filterStartDate">
+      <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #startDatePicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput [matDatepicker]="endDatePicker" placeholder="End date" [max]="maxDate"
+             [(ngModel)]="filterEndDate">
+      <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #endDatePicker></mat-datepicker>
+    </mat-form-field>
+
+    <select [(ngModel)]="filterClass">
+      <option value="" disabled>Select Class</option>
+      <option *ngFor="let class of classList" value="{{class._id}}">{{class.name}}</option>
+    </select>
+
+    <select [(ngModel)]="filterProfessor" multiple>
+      <!--<option (click)="selectAllProfessor()">Select All</option>-->
+      <option *ngFor="let professor of professorList" value="{{professor._id}}">{{professor.firstName + ' ' +
+        professor.lastName}}
+      </option>
+    </select>
+
+    <button type="button" (click)="onClickSearchButton()">Search</button>
+    <button type="reset" (click)="onClear()">Clear</button>
+  </div>
+</div>
+<br><br>
+
+
+<!-- Data Grid -->
+<div *ngIf="showDataGrid">
+  <table>
+    <tr>
+      <th>Sr. No</th>
+      <th>Date</th>
+      <th>Present</th>
+      <th>Absent</th>
+      <th>Total</th>
+      <th>Professor</th>
+    </tr>
+
+    <tr
+      *ngFor="let attendance of attendanceList | paginate: { currentPage: page, itemsPerPage: recordsPerPage, totalItems: totalRecords }; let i = index">
+      <td>{{i + 1}}</td>
+      <td>{{attendance.attendanceDate | date:'dd-MM-yyyy'}}</td>
+      <td>{{attendance.present}}</td>
+      <td>{{attendance.absent}}</td>
+      <td>{{attendance.studentData.length}}</td>
+      <td>{{attendance.teacher.firstName + ' ' + attendance.teacher.lastName}}</td>
+    </tr>
+
+    <tr *ngIf="!attendanceList">
+      <td colspan="6">
+        <h3>{{statusMessage}}</h3>
+      </td>
+    </tr>
+  </table>
+
+  <app-pagination (pageChange)="page = $event; getAttendanceData()"
+                  (numberChange)="onRecordsPerPageChange($event)"></app-pagination>
+</div>

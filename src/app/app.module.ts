@@ -8,6 +8,8 @@ import {UtilityModule} from './utility/utility.module';
 import {MasterModule} from './master/master.module';
 import {MasterRoutingModule} from './master/master-routing.module';
 import {AuthGuard} from './_guards/auth.guard';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {ToastrModule} from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -20,6 +22,8 @@ import {AuthGuard} from './_guards/auth.guard';
     UtilityModule,
     MasterModule,
     MasterRoutingModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
     AppRoutingModule
   ],
   providers: [AuthGuard],

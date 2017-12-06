@@ -12,6 +12,7 @@ import {FeedbackComponent} from './feedback/feedback.component';
 import {MatDatepickerModule, MatFormFieldModule, MatInputModule, MatNativeDateModule} from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { ReportComponent } from './report/report.component';
+import { AttendanceComponent } from './attendance/attendance.component';
 
 @NgModule({
   imports: [
@@ -26,7 +27,7 @@ import { ReportComponent } from './report/report.component';
     BrowserAnimationsModule,
     RouterModule
   ],
-  declarations: [DashboardComponent, HeaderComponent, DepartmentComponent, CourseComponent, ClassesComponent, FeedbackComponent, ReportComponent],
+  declarations: [DashboardComponent, HeaderComponent, DepartmentComponent, CourseComponent, ClassesComponent, FeedbackComponent, ReportComponent, AttendanceComponent],
   exports: [HeaderComponent]
 })
 export class MasterModule {

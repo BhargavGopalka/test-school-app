@@ -5,18 +5,21 @@ import {Observable} from 'rxjs/Observable';
 import {catchError, tap} from 'rxjs/operators';
 import {Token} from '../tokens/tokens';
 import 'rxjs/add/observable/throw';
+import {ToastrService} from 'ngx-toastr';
 
 @Injectable()
 export class ApiManagerService {
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+              private toastr: ToastrService) {
   }
 
   /* APIs */
   putAPI(endpoint: string, formValue): Observable<any> {
     return this.http.put<any>(API.baseURL + endpoint, formValue, {headers: this.httpOptions})
       .pipe(
-        tap(() => {
+        tap((response) => {
+          this.showToastr(response, true);
         }),
         catchError(this.onCatch)
       );
@@ -26,14 +29,15 @@ export class ApiManagerService {
     return this.http.delete<any>(API.baseURL + endpoint, {headers: this.httpOptions})
       .pipe(
         tap((response) => {
+          this.showToastr(response, true);
         }),
         catchError(this.onCatch)
       );
   }
 
   getAPI(endpoint: string, queryParams?, searchParams?): Observable<any> {
-    queryParams ? queryParams : queryParams = {};
-    (searchParams) ? queryParams['search'] = JSON.stringify(searchParams) : '';
+    queryParams ? queryParams : (queryParams = {});
+    (searchParams) ? (queryParams['search'] = JSON.stringify(searchParams)) : '';
     let params = new HttpParams();
     // const params = new URLSearchParams();          /* Angular 4 way */
     for (const key in queryParams) {
@@ -47,6 +51,7 @@ export class ApiManagerService {
       {headers: this.httpOptions})
       .pipe(
         tap((response: any) => {
+          this.showToastr(response, false);
         }),
         catchError(this.onCatch)
       );
@@ -56,6 +61,7 @@ export class ApiManagerService {
     return this.http.post<any>(API.baseURL + endpoint, formValue, {headers: this.httpOptions})
       .pipe(
         tap((response: any) => {
+          this.showToastr(response, true);
         }),
         catchError(this.onCatch)
       );
@@ -67,6 +73,15 @@ export class ApiManagerService {
     const token = (Authorization ? Authorization : Token.STATIC_TOKEN);
     const headers = new HttpHeaders({'Authorization': `Bearer ` + token});
     return headers;
+  }
+
+  /* Toastr Sucess Message */
+  showToastr(response, show: Boolean) {
+    const toastrMessage = response.message;
+    
+    if (toastrMessage && show) {
+      this.toastr.success(toastrMessage);
+    }
   }
 
   /* Catch an Error */
