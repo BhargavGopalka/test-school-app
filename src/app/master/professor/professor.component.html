@@ -1,0 +1,45 @@
+<!-- Data Grid -->
+<div *ngIf="showDataGrid">
+  <table>
+    <tr>
+      <th>Sr. No</th>
+      <th>Name</th>
+      <th>Professor ID</th>
+      <th>Department</th>
+      <th>Assign Classes</th>
+      <th>Accept/Reject</th>
+      <th>Status</th>
+      <th colspan="2">Action</th>
+    </tr>
+
+    <tr
+      *ngFor="let professor of professorList | paginate: { currentPage: page, itemsPerPage: recordsPerPage, totalItems: totalRecords }; let i = index">
+      <td>{{i + 1}}</td>
+      <td>{{professor.firstName + ' ' + professor.lastName}}</td>
+      <td>{{professor.professorId ? professor.professorId : '-'}}</td>
+      <td>{{professor.department?.name ? professor.department?.name : '-'}}</td>
+      <td>
+        <button (click)="onAssignClasses(professor)">Assign</button>
+      </td>
+      <td>{{professor.approveStatus}}</td>
+      <td>
+        <button (click)="onChangeStatus(professor)">{{professor.isEnable}}</button>
+      </td>
+      <td>
+        <button (click)="onAddEditButtonClick(professor)">Edit</button>
+      </td>
+      <td>
+        <button (click)="onViewButtonClick(professor)">View</button>
+      </td>
+    </tr>
+
+    <tr *ngIf="!professorList">
+      <td colspan="5">
+        <h3>{{statusMessage}}</h3>
+      </td>
+    </tr>
+  </table>
+
+  <app-pagination (pageChange)="page = $event; getProfessorData()"
+                  (numberChange)="onRecordsPerPageChange($event)"></app-pagination>
+</div>

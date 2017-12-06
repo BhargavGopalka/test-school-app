@@ -9,6 +9,7 @@ import {ClassesComponent} from './classes/classes.component';
 import {FeedbackComponent} from './feedback/feedback.component';
 import {ReportComponent} from './report/report.component';
 import {AttendanceComponent} from './attendance/attendance.component';
+import {ProfessorComponent} from "./professor/professor.component";
 
 const routes: Routes = [
   {
@@ -44,6 +45,11 @@ const routes: Routes = [
   {
     path: 'attendance',
     component: AttendanceComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'professor',
+    component: ProfessorComponent,
     canActivate: [AuthGuard]
   }
 ];
