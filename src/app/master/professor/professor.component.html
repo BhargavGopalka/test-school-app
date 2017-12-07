@@ -1,3 +1,26 @@
+<!-- Filter options -->
+<div *ngIf="showDataGrid">
+  <h3 align="left">Professor Management</h3>
+
+  <div>
+    <button (click)="onClickAddProfessor()">Add Professor</button>
+  </div>
+  <br>
+
+  <div>
+    <input type="text" placeholder="Name" [(ngModel)]="filterName">
+    <input type="text" placeholder="Professor ID" [(ngModel)]="filterProfessorId">
+    <select [(ngModel)]="filterDepartment">
+      <option value="" disabled>Select Department</option>
+      <option *ngFor="let department of departmentList" value="{{department._id}}">{{department.name}}</option>
+    </select>
+
+    <button type="button" (click)="onClickSearchButton()">Search</button>
+    <button type="reset" (click)="onClear()">Clear</button>
+  </div>
+</div>
+<br><br>
+
 <!-- Data Grid -->
 <div *ngIf="showDataGrid">
   <table>
@@ -23,7 +46,7 @@
       </td>
       <td>{{professor.approveStatus}}</td>
       <td>
-        <button (click)="onChangeStatus(professor)">{{professor.isEnable}}</button>
+        <button (click)="preventMultipleClick ? onChangeStatus(professor) : null">{{professor.isEnable}}</button>
       </td>
       <td>
         <button (click)="onAddEditButtonClick(professor)">Edit</button>
@@ -42,4 +65,109 @@
 
   <app-pagination (pageChange)="page = $event; getProfessorData()"
                   (numberChange)="onRecordsPerPageChange($event)"></app-pagination>
+</div>
+
+<!-- Assign classes form -->
+<div *ngIf="showAssignClassesForm">
+  <form [formGroup]="assignClassForm" (submit)="onSubmitAssignClass(assignClassForm.value, assignClassForm.valid)">
+    <div>
+      <select formControlName="classNames" multiple>
+        <option value="" disabled>Classes</option>
+        <option *ngFor="let classes of classesList" [ngValue]="classes">{{classes.name}}</option>
+      </select>
+
+      <div *ngIf="classValidation(assignClassForm.controls['classNames'])" style="color: red">{{classErrorMessage}}
+      </div>
+    </div>
+    <br><br>
+    <button type="submit">Add</button>
+    <button type="reset" (click)="onCancelAssignClassView()">Cancel</button>
+  </form>
+</div>
+
+<!-- Add/Edit/View Form -->
+<div *ngIf="showAddEditForm">
+  <form [formGroup]="professorForm">
+
+    <div>
+      <a>First Name</a>
+      <input type="text" placeholder="Enter First Name" formControlName="firstName">
+    </div><br>
+
+    <div>
+      <a>Last Name</a>
+      <input type="text" placeholder="Enter Last Name" formControlName="lastName">
+    </div><br>
+
+    <div>
+      <a>Company</a>
+      <input type="text" placeholder="Enter Company/University" formControlName="company">
+    </div><br>
+
+    <div>
+      <a>Professor ID</a>
+      <input type="text" placeholder="Enter Professor ID" formControlName="professorId">
+    </div><br>
+
+    <div>
+      <a>Area of Specialization</a>
+      <input type="text" placeholder="Enter Area of Specialization" formControlName="specialization">
+    </div><br>
+
+    <div>
+      <a>Department</a>
+      <select formControlName="department">
+        <option value="" disabled>Select Department</option>
+        <option *ngFor="let department of departmentList" value="{{department._id}}">{{department.name}}</option>
+      </select>
+    </div><br>
+
+    <div>
+      <a>Enter Joined Date</a>
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="joinDate">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div><br>
+
+    <div>
+      <a>Experience (Years)</a>
+      <select formControlName="experience">
+        <option *ngFor="let experience of experienceList" value="experience">{{experience}}</option>
+      </select>
+    </div><br>
+
+    <div>
+      <a>Gender</a>
+      Male<input type="radio" formControlName="gender" value="Male">
+      Female<input type="radio" formControlName="gender" value="Female">
+      Other<input type="radio" formControlName="gender" value="Other">
+    </div><br>
+
+    <div>
+      <a>Date of Birth</a>
+      <mat-form-field>
+        <input matInput [matDatepicker]="datepicker" placeholder="Choose a Birth Date" formControlName="birthDate">
+        <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+        <mat-datepicker #datepicker></mat-datepicker>
+      </mat-form-field>
+    </div><br>
+
+    <div>
+      <a>Mobile Number</a>
+      <input type="text" placeholder="Enter mobile number" formControlName="mobileNumber">
+    </div><br>
+
+    <div>
+      <a>Email Address</a>
+      <input type="text" placeholder="Enter Email Address" formControlName="email">
+    </div><br>
+
+    <div>
+      <a>Address</a>
+      <input type="text" placeholder="Enter Address" formControlName="address">
+    </div><br>
+
+  </form>
 </div>

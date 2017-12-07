@@ -1,4 +1,5 @@
 import {Department} from '../department/department.model';
+import {Classes} from '../classes/classes.model';
 
 export class Professor {
   public _id: string;
@@ -19,8 +20,16 @@ export class Professor {
   private _isEnable: boolean;
   private _approveStatus: string;
   private _gender: string;
-  private _allocatedClass: AllocatedClasses[];
+  private _allocatedClass: Classes[];
   private _department: Department[];
+
+  get allocatedClass(): Classes[] {
+    return this._allocatedClass;
+  }
+
+  set allocatedClass(value: Classes[]) {
+    this._allocatedClass = value;
+  }
 
   get id(): string {
     return this._id;
@@ -166,13 +175,7 @@ export class Professor {
     this._gender = value;
   }
 
-  get allocatedClass(): AllocatedClasses[] {
-    return this._allocatedClass;
-  }
 
-  set allocatedClass(value: AllocatedClasses[]) {
-    this._allocatedClass = value;
-  }
 
   get department(): Department[] {
     return this._department;
