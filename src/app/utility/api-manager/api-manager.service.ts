@@ -15,14 +15,34 @@ export class ApiManagerService {
   }
 
   /* APIs */
-  putAPI(endpoint: string, formValue): Observable<any> {
-    return this.http.put<any>(API.baseURL + endpoint, formValue, {headers: this.httpOptions})
-      .pipe(
-        tap((response) => {
-          this.showToastr(response, true);
-        }),
-        catchError(this.onCatch)
-      );
+  putAPI(endpoint: string, formValue, files?): Observable<any> {
+    if (!files) {
+      return this.http.put<any>(API.baseURL + endpoint, formValue, {headers: this.httpOptions})
+        .pipe(
+          tap((response) => {
+            this.showToastr(response, true);
+          }),
+          catchError(this.onCatch)
+        );
+    } else {
+      const singleFile: File = files[0];
+      const formData: FormData = new FormData();
+      formData.append('image', singleFile, singleFile.name);
+      if (formValue !== '' && formValue !== undefined && formValue !== null) {
+        for (const property in formValue) {
+          if (formValue.hasOwnProperty(property)) {
+            formData.append(property, formValue[property]);
+          }
+        }
+      }
+      return this.http.put<any>(API.baseURL + endpoint, formData, {headers: this.httpOptions})
+        .pipe(
+          tap((response) => {
+            this.showToastr(response, true);
+          }),
+          catchError(this.onCatch)
+        );
+    }
   }
 
   deleteAPI(endpoint: string): Observable<any> {
@@ -57,14 +77,34 @@ export class ApiManagerService {
       );
   }
 
-  postAPI(endpoint: string, formValue): Observable<any> {
-    return this.http.post<any>(API.baseURL + endpoint, formValue, {headers: this.httpOptions})
-      .pipe(
-        tap((response: any) => {
-          this.showToastr(response, true);
-        }),
-        catchError(this.onCatch)
-      );
+  postAPI(endpoint: string, formValue, files?): Observable<any> {
+    if (!files) {
+      return this.http.post<any>(API.baseURL + endpoint, formValue, {headers: this.httpOptions})
+        .pipe(
+          tap((response: any) => {
+            this.showToastr(response, true);
+          }),
+          catchError(this.onCatch)
+        );
+    } else {
+      const singleFile: File = files[0];
+      const formData: FormData = new FormData();
+      formData.append('image', singleFile, singleFile.name);
+      if (formValue !== '' && formValue !== undefined && formValue !== null) {
+        for (const property in formValue) {
+          if (formValue.hasOwnProperty(property)) {
+            formData.append(property, formValue[property]);
+          }
+        }
+      }
+      return this.http.post<any>(API.baseURL + endpoint, formData, {headers: this.httpOptions})
+        .pipe(
+          tap((response: any) => {
+            this.showToastr(response, true);
+          }),
+          catchError(this.onCatch)
+        );
+    }
   }
 
   /* Headers */
@@ -78,7 +118,7 @@ export class ApiManagerService {
   /* Toastr Sucess Message */
   showToastr(response, show: Boolean) {
     const toastrMessage = response.message;
-    
+
     if (toastrMessage && show) {
       this.toastr.success(toastrMessage);
     }

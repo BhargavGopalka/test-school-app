@@ -5,6 +5,7 @@ import {ApiManagerService} from '../../utility/api-manager/api-manager.service';
 import {Department} from '../department/department.model';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Classes} from '../classes/classes.model';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-professor',
@@ -20,11 +21,14 @@ export class ProfessorComponent implements OnInit {
   professorList: Professor[];
   departmentList: Department[];
   classesList: Classes[];
+  experienceList: any[] = [];
   assignClassForm: FormGroup;
   selectedProfessor: Professor;
   professorForm: FormGroup;
+  filesToUpload: any;
 
   classErrorMessage: string;
+  formButtonMessage: string;
   filterName = '';
   filterProfessorId = '';
   filterDepartment = '';
@@ -32,7 +36,14 @@ export class ProfessorComponent implements OnInit {
   preventMultipleClick = true;
   showDataGrid = true;
   showAddEditForm = false;
+  maxDate = new Date();
   statusMessage = 'Loading Data. Please wait ...';
+
+  firstNameErrorMessage: string;
+  lastNameErrorMessage: string;
+  departmentErrorMessage: string;
+  mobileErrorMessage: string;
+  emailErrorMessage: string;
 
   constructor(private apiManager: ApiManagerService) {
   }
@@ -42,24 +53,90 @@ export class ProfessorComponent implements OnInit {
     this.getDepartmentData();
     this.getClassList();
     this.createProfessorForm();
+    this.getExperienceList();
   }
 
-  createProfessorForm() {
+  createProfessorForm(professor?) {
     this.professorForm = new FormGroup({
-      firstName: new FormControl(''),
-      lastName: new FormControl(''),
-      company: new FormControl(''),
-      professorId: new FormControl(''),
-      specialization: new FormControl(''),
-      department: new FormControl(''),
-      joinDate: new FormControl(''),
-      experience: new FormControl(''),
-      gender: new FormControl(''),
-      birthDate: new FormControl(''),
-      mobileNumber: new FormControl(''),
-      email: new FormControl(''),
-      address: new FormControl('')
+      firstName: new FormControl(professor ? professor.firstName : '', {
+        validators: [Validators.required],
+        updateOn: 'blur'
+      }),
+      lastName: new FormControl(professor ? professor.lastName : '', {
+        validators: [Validators.required],
+        updateOn: 'blur'
+      }),
+      company: new FormControl(professor ? professor.company : ''),
+      professorId: new FormControl(professor ? professor.professorId : ''),
+      specialization: new FormControl(professor ? professor.specialization : ''),
+      department: new FormControl(professor ? professor.department.departmentId : '', {
+        validators: [Validators.required],
+        updateOn: 'blur'
+      }),
+      joinDate: new FormControl(professor ? professor.joinDate : ''),
+      experience: new FormControl(professor ? professor.experience : ''),
+      gender: new FormControl(professor ? professor.gender : 'Male'),
+      birthDate: new FormControl(professor ? professor.birthDate : ''),
+      mobileNumber: new FormControl(professor ? professor.mobileNumber : '', {
+        validators: [Validators.required, Validators.minLength(10), Validators.maxLength(11)],
+        updateOn: 'blur'
+      }),
+      email: new FormControl(professor ? professor.email : '', {validators: [Validators.required], updateOn: 'blur'}),
+      address: new FormControl(professor ? professor.address : '')
     });
+  }
+
+  firstNameValidation(control: AbstractControl) {
+    if (control.errors === null) {
+      return null;
+    } else {
+      if (control.errors.required) {
+        return this.firstNameErrorMessage = 'First name is required';
+      }
+    }
+  }
+
+  lastNameValidation(control: AbstractControl) {
+    if (control.errors === null) {
+      return null;
+    } else {
+      if (control.errors.required) {
+        return this.lastNameErrorMessage = 'Last name is required';
+      }
+    }
+  }
+
+  departmentValidation(control: AbstractControl) {
+    if (control.errors === null) {
+      return null;
+    } else {
+      if (control.errors.required) {
+        return this.departmentErrorMessage = 'Department is required';
+      }
+    }
+  }
+
+  mobileValidation(control: AbstractControl) {
+    if (control.errors === null) {
+      return null;
+    } else {
+      if (control.errors.required) {
+        return this.mobileErrorMessage = 'Mobile Number is required';
+      }
+      if ((control.value.length < 10) || (control.value.length > 11)) {
+        return this.mobileErrorMessage = 'Mobile Number must be 10 or 11 digits long';
+      }
+    }
+  }
+
+  emailValidation(control: AbstractControl) {
+    if (control.errors === null) {
+      return null;
+    } else {
+      if (control.errors.required) {
+        return this.emailErrorMessage = 'Email is required';
+      }
+    }
   }
 
   createClassForm(professor?) {
@@ -73,6 +150,12 @@ export class ProfessorComponent implements OnInit {
       return null;
     } else if (control.errors.required === true) {
       return this.classErrorMessage = 'Classes required';
+    }
+  }
+
+  getExperienceList() {
+    for (let i = 1; i <= 50; i++) {
+      this.experienceList.push(i);
     }
   }
 
@@ -97,6 +180,45 @@ export class ProfessorComponent implements OnInit {
       .subscribe((response) => {
         this.classesList = response.payload.data;
       });
+  }
+
+  onAddEditProfessorFrom(formValue, valid) {
+    for (const property in formValue) {
+      if (formValue[property] === null || formValue[property] === '') {
+        delete formValue[property];
+      }
+    }
+    const value = formValue;
+    if (valid) {
+      if (value.joinDate) {
+        value.joinDate = moment(value.joinDate).format('YYYY/MM/DD');
+      }
+      if (value.birthDate) {
+        value.birthDate = moment(value.birthDate).format('YYYY/MM/DD');
+      }
+      formValue['role'] = 'teacher';
+      if (this.selectedProfessor) {
+        debugger;
+        this.apiManager.putAPI(API.UPDATE_USER + '/' + this.selectedProfessor._id, value, this.filesToUpload)
+          .subscribe((response) => {
+            this.showDataGrid = true;
+            this.showAddEditForm = false;
+            this.getProfessorData();
+          });
+      } else {
+        this.apiManager.postAPI(API.ADD_USER, value, this.filesToUpload)
+          .subscribe((response) => {
+            this.showDataGrid = true;
+            this.showAddEditForm = false;
+            this.getProfessorData();
+          });
+      }
+    }
+  }
+
+  fileChange(event) {
+    const fileList: FileList = event.target.files;
+    this.filesToUpload = fileList;
   }
 
   onChangeStatus(professor: Professor) {
@@ -127,9 +249,73 @@ export class ProfessorComponent implements OnInit {
     }
   }
 
-  onClickAddProfessor() {
+  onLeaveFormView() {
+    this.showAddEditForm = false;
+    this.showDataGrid = true;
+  }
+
+  professorFormDisable(disable) {
+
+    const firstName = this.professorForm.get('firstName');
+    disable ? firstName.disable() : firstName.enable();
+
+    const lastName = this.professorForm.get('lastName');
+    disable ? lastName.disable() : lastName.enable();
+
+    const company = this.professorForm.get('company');
+    disable ? company.disable() : company.enable();
+
+    const professorId = this.professorForm.get('professorId');
+    disable ? professorId.disable() : professorId.enable();
+
+    const specialization = this.professorForm.get('specialization');
+    disable ? specialization.disable() : specialization.enable();
+
+    const department = this.professorForm.get('department');
+    disable ? department.disable() : department.enable();
+
+    const joinDate = this.professorForm.get('joinDate');
+    disable ? joinDate.disable() : joinDate.enable();
+
+    const experience = this.professorForm.get('experience');
+    disable ? experience.disable() : experience.enable();
+
+    const gender = this.professorForm.get('gender');
+    disable ? gender.disable() : gender.enable();
+
+    const birthDate = this.professorForm.get('birthDate');
+    disable ? birthDate.disable() : birthDate.enable();
+
+    const mobileNumber = this.professorForm.get('mobileNumber');
+    disable ? mobileNumber.disable() : mobileNumber.enable();
+
+    const email = this.professorForm.get('email');
+    disable ? email.disable() : email.enable();
+
+    const address = this.professorForm.get('address');
+    disable ? address.disable() : address.enable();
+
+  }
+
+  onAddButtonClick() {
     this.showAddEditForm = true;
     this.showDataGrid = false;
+    this.selectedProfessor = null;
+    this.formButtonMessage = 'Add';
+    this.createProfessorForm();
+  }
+
+  onEditViewButtonClick(professor: Professor, message: string) {
+    this.showAddEditForm = true;
+    this.showDataGrid = false;
+    this.formButtonMessage = message;
+    this.selectedProfessor = professor;
+    this.createProfessorForm(this.selectedProfessor);
+    if (this.formButtonMessage === 'View') {
+      this.professorFormDisable(true);
+    } else {
+      this.professorFormDisable(false);
+    }
   }
 
   onCancelAssignClassView() {

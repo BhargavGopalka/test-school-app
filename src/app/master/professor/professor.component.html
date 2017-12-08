@@ -3,7 +3,7 @@
   <h3 align="left">Professor Management</h3>
 
   <div>
-    <button (click)="onClickAddProfessor()">Add Professor</button>
+    <button (click)="onAddButtonClick()">Add Professor</button>
   </div>
   <br>
 
@@ -49,10 +49,10 @@
         <button (click)="preventMultipleClick ? onChangeStatus(professor) : null">{{professor.isEnable}}</button>
       </td>
       <td>
-        <button (click)="onAddEditButtonClick(professor)">Edit</button>
+        <button (click)="onEditViewButtonClick(professor, 'Update')">Edit</button>
       </td>
       <td>
-        <button (click)="onViewButtonClick(professor)">View</button>
+        <button (click)="onEditViewButtonClick(professor, 'View')">View</button>
       </td>
     </tr>
 
@@ -87,32 +87,51 @@
 
 <!-- Add/Edit/View Form -->
 <div *ngIf="showAddEditForm">
-  <form [formGroup]="professorForm">
+
+  <div>
+    <h3>{{formButtonMessage}} Professor</h3>
+  </div>
+  <br>
+
+  <form [formGroup]="professorForm" (submit)="onAddEditProfessorFrom(professorForm.value, professorForm.valid)">
 
     <div>
       <a>First Name</a>
       <input type="text" placeholder="Enter First Name" formControlName="firstName">
-    </div><br>
+      <div
+        *ngIf="professorForm.controls['firstName'].touched && firstNameValidation(professorForm.controls['firstName'])"
+        style="color: red">
+        {{firstNameErrorMessage}}
+      </div>
+    </div>
+    <br>
 
     <div>
       <a>Last Name</a>
       <input type="text" placeholder="Enter Last Name" formControlName="lastName">
-    </div><br>
+      <div *ngIf="professorForm.controls['lastName'].touched && lastNameValidation(professorForm.controls['lastName'])"
+           style="color: red">{{lastNameErrorMessage}}
+      </div>
+    </div>
+    <br>
 
     <div>
       <a>Company</a>
       <input type="text" placeholder="Enter Company/University" formControlName="company">
-    </div><br>
+    </div>
+    <br>
 
     <div>
       <a>Professor ID</a>
       <input type="text" placeholder="Enter Professor ID" formControlName="professorId">
-    </div><br>
+    </div>
+    <br>
 
     <div>
       <a>Area of Specialization</a>
       <input type="text" placeholder="Enter Area of Specialization" formControlName="specialization">
-    </div><br>
+    </div>
+    <br>
 
     <div>
       <a>Department</a>
@@ -120,54 +139,89 @@
         <option value="" disabled>Select Department</option>
         <option *ngFor="let department of departmentList" value="{{department._id}}">{{department.name}}</option>
       </select>
-    </div><br>
+      <div
+        *ngIf="professorForm.controls['department'].touched && departmentValidation(professorForm.controls['department'])"
+        style="color: red">
+        {{departmentErrorMessage}}
+      </div>
+    </div>
+    <br>
 
     <div>
       <a>Enter Joined Date</a>
       <mat-form-field>
-        <input matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="joinDate">
+        <input matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="joinDate"
+               [max]="maxDate">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
-    </div><br>
+    </div>
+    <br>
 
     <div>
       <a>Experience (Years)</a>
       <select formControlName="experience">
-        <option *ngFor="let experience of experienceList" value="experience">{{experience}}</option>
+        <option *ngFor="let experience of experienceList" value="{{experience}}">{{experience}}</option>
       </select>
-    </div><br>
+    </div>
+    <br>
 
     <div>
-      <a>Gender</a>
-      Male<input type="radio" formControlName="gender" value="Male">
-      Female<input type="radio" formControlName="gender" value="Female">
-      Other<input type="radio" formControlName="gender" value="Other">
-    </div><br>
+      <a>Gender:</a>
+      <input type="radio" formControlName="gender" value="Male">Male
+      <input type="radio" formControlName="gender" value="Female">Female
+      <input type="radio" formControlName="gender" value="Other">Other
+    </div>
+    <br>
 
     <div>
       <a>Date of Birth</a>
       <mat-form-field>
-        <input matInput [matDatepicker]="datepicker" placeholder="Choose a Birth Date" formControlName="birthDate">
+        <input matInput [matDatepicker]="datepicker" placeholder="Choose a Birth Date" formControlName="birthDate"
+               [max]="maxDate">
         <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
         <mat-datepicker #datepicker></mat-datepicker>
       </mat-form-field>
-    </div><br>
+    </div>
+    <br>
 
     <div>
       <a>Mobile Number</a>
       <input type="text" placeholder="Enter mobile number" formControlName="mobileNumber">
-    </div><br>
+      <div
+        *ngIf="professorForm.controls['mobileNumber'].touched && mobileValidation(professorForm.controls['mobileNumber'])"
+        style="color: red">{{mobileErrorMessage}}
+      </div>
+    </div>
+    <br>
 
     <div>
       <a>Email Address</a>
       <input type="text" placeholder="Enter Email Address" formControlName="email">
-    </div><br>
+      <div *ngIf="professorForm.controls['email'].touched && emailValidation(professorForm.controls['email'])"
+           style="color: red">{{emailErrorMessage}}
+      </div>
+    </div>
+    <br>
 
     <div>
       <a>Address</a>
       <input type="text" placeholder="Enter Address" formControlName="address">
-    </div><br>
+    </div>
+    <br>
+
+    <div>
+      <a>Image</a>
+      <input type="file" placeholder="Enter Image" (change)="fileChange($event)"
+             accept="image/gif, image/jpeg, image/png, image/jpg">
+    </div>
+    <br>
+
+    <div>
+      <button type="submit" *ngIf="!(formButtonMessage === 'View')">{{formButtonMessage}}</button>
+      <button type="reset" (click)="onLeaveFormView()">cancel</button>
+    </div>
+    <br>
 
   </form>
 </div>

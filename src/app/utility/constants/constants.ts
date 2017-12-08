@@ -9,6 +9,8 @@ export class API {
   public static FEEDBACK = 'feedback';
   public static ATTENDANCE = 'attendance';
   public static ASSIGN_CLASSES = 'user/assignClass';
+  public static ADD_USER = 'user/signupByAdmin';
+  public static UPDATE_USER = 'user/updateUserByAdmin';
 }
 
 export class Constant {
