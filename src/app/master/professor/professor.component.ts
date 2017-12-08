@@ -348,6 +348,13 @@ export class ProfessorComponent implements OnInit {
   onRecordsPerPageChange(event) {
     this.page = 1;
     this.recordsPerPage = +event;
+    this.onClear();
+    this.getProfessorData();
+  }
+
+  onPageChange(event) {
+    this.page = event;
+    this.onClear();
     this.getProfessorData();
   }
 

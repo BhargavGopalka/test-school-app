@@ -63,7 +63,7 @@
     </tr>
   </table>
 
-  <app-pagination (pageChange)="page = $event; getProfessorData()"
+  <app-pagination (pageChange)="onPageChange($event)"
                   (numberChange)="onRecordsPerPageChange($event)"></app-pagination>
 </div>
 

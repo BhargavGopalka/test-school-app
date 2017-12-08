@@ -59,6 +59,6 @@
     </tr>
   </table>
 
-  <app-pagination (pageChange)="page = $event; getStudentData()"
+  <app-pagination (pageChange)="onPageChange($event)"
                   (numberChange)="onRecordsPerPageChange($event)"></app-pagination>
 </div>

@@ -62,6 +62,13 @@ export class StudentComponent implements OnInit {
   onRecordsPerPageChange(value) {
     this.page = 1;
     this.recordsPerPage = +value;
+    this.onClear();
+    this.getStudentData();
+  }
+
+  onPageChange(event) {
+    this.page = event;
+    this.onClear();
     this.getStudentData();
   }
 
