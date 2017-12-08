@@ -1,0 +1,64 @@
+<!-- Filter options -->
+<div *ngIf="showDataGrid">
+  <h3 align="left">Student Management</h3>
+
+  <div>
+    <button (click)="onAddButtonClick()">Add Student</button>
+  </div>
+  <br>
+
+  <div>
+    <input type="text" placeholder="Name" [(ngModel)]="filterName">
+    <input type="text" placeholder="Professor ID" [(ngModel)]="filterApplicationId">
+    <select [(ngModel)]="filterClass">
+      <option value="" disabled>Select Class</option>
+      <option *ngFor="let classes of classesList" value="{{classes._id}}">{{classes.name}}</option>
+    </select>
+
+    <button type="button" (click)="onClickSearchButton()">Search</button>
+    <button type="reset" (click)="onClear()">Clear</button>
+  </div>
+</div>
+<br><br>
+
+<!-- Data Grid -->
+<div *ngIf="showDataGrid">
+  <table>
+    <tr>
+      <th>Sr. No</th>
+      <th>Name</th>
+      <th>Application ID</th>
+      <th>Class</th>
+      <th>Accept/Reject</th>
+      <th>Status</th>
+      <th colspan="2">Action</th>
+    </tr>
+
+    <tr
+      *ngFor="let student of studentList | paginate: { currentPage: page, itemsPerPage: recordsPerPage, totalItems: totalRecords }; let i = index">
+      <td>{{i + 1}}</td>
+      <td>{{student.firstName + ' ' + student.lastName}}</td>
+      <td>{{student.applicationId ? student.applicationId : '-'}}</td>
+      <td>{{student.studentClass?.className ? student.studentClass?.className : '-'}}</td>
+      <td>{{student.approveStatus}}</td>
+      <td>
+        <button (click)="preventMultipleClick ? onChangeStatus(student) : null">{{student.isEnable}}</button>
+      </td>
+      <td>
+        <button (click)="onEditViewButtonClick(student, 'Update')">Edit</button>
+      </td>
+      <td>
+        <button (click)="onEditViewButtonClick(student, 'View')">View</button>
+      </td>
+    </tr>
+
+    <tr *ngIf="!studentList">
+      <td colspan="5">
+        <h3>{{statusMessage}}</h3>
+      </td>
+    </tr>
+  </table>
+
+  <app-pagination (pageChange)="page = $event; getStudentData()"
+                  (numberChange)="onRecordsPerPageChange($event)"></app-pagination>
+</div>

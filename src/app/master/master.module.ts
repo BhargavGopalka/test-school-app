@@ -14,6 +14,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { ReportComponent } from './report/report.component';
 import { AttendanceComponent } from './attendance/attendance.component';
 import { ProfessorComponent } from './professor/professor.component';
+import { StudentComponent } from './student/student.component';
 
 @NgModule({
   imports: [
@@ -28,7 +29,7 @@ import { ProfessorComponent } from './professor/professor.component';
     BrowserAnimationsModule,
     RouterModule
   ],
-  declarations: [DashboardComponent, HeaderComponent, DepartmentComponent, CourseComponent, ClassesComponent, FeedbackComponent, ReportComponent, AttendanceComponent, ProfessorComponent],
+  declarations: [DashboardComponent, HeaderComponent, DepartmentComponent, CourseComponent, ClassesComponent, FeedbackComponent, ReportComponent, AttendanceComponent, ProfessorComponent, StudentComponent],
   exports: [HeaderComponent]
 })
 export class MasterModule {

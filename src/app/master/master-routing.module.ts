@@ -10,6 +10,7 @@ import {FeedbackComponent} from './feedback/feedback.component';
 import {ReportComponent} from './report/report.component';
 import {AttendanceComponent} from './attendance/attendance.component';
 import {ProfessorComponent} from "./professor/professor.component";
+import {StudentComponent} from "./student/student.component";
 
 const routes: Routes = [
   {
@@ -50,6 +51,11 @@ const routes: Routes = [
   {
     path: 'professor',
     component: ProfessorComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'student',
+    component: StudentComponent,
     canActivate: [AuthGuard]
   }
 ];
