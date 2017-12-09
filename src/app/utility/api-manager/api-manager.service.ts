@@ -78,8 +78,17 @@ export class ApiManagerService {
   }
 
   postAPI(endpoint: string, formValue, files?): Observable<any> {
+    const formData: FormData = new FormData();
+    if (formValue !== '' && formValue !== undefined && formValue !== null) {
+      for (const property in formValue) {
+        if (formValue.hasOwnProperty(property)) {
+          formData.append(property, formValue[property]);
+        }
+      }
+    }
+
     if (!files) {
-      return this.http.post<any>(API.baseURL + endpoint, formValue, {headers: this.httpOptions})
+      return this.http.post<any>(API.baseURL + endpoint, formData, {headers: this.httpOptions})
         .pipe(
           tap((response: any) => {
             this.showToastr(response, true);
@@ -88,15 +97,7 @@ export class ApiManagerService {
         );
     } else {
       const singleFile: File = files[0];
-      const formData: FormData = new FormData();
       formData.append('image', singleFile, singleFile.name);
-      if (formValue !== '' && formValue !== undefined && formValue !== null) {
-        for (const property in formValue) {
-          if (formValue.hasOwnProperty(property)) {
-            formData.append(property, formValue[property]);
-          }
-        }
-      }
       return this.http.post<any>(API.baseURL + endpoint, formData, {headers: this.httpOptions})
         .pipe(
           tap((response: any) => {

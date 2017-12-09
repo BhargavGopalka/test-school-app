@@ -78,7 +78,7 @@ export class ProfessorComponent implements OnInit {
       gender: new FormControl(professor ? professor.gender : 'Male'),
       birthDate: new FormControl(professor ? professor.birthDate : ''),
       mobileNumber: new FormControl(professor ? professor.mobileNumber : '', {
-        validators: [Validators.required, Validators.minLength(10), Validators.maxLength(11)],
+        validators: [Validators.required, Validators.minLength(10), Validators.maxLength(10)],
         updateOn: 'blur'
       }),
       email: new FormControl(professor ? professor.email : '', {validators: [Validators.required], updateOn: 'blur'}),
@@ -123,8 +123,8 @@ export class ProfessorComponent implements OnInit {
       if (control.errors.required) {
         return this.mobileErrorMessage = 'Mobile Number is required';
       }
-      if ((control.value.length < 10) || (control.value.length > 11)) {
-        return this.mobileErrorMessage = 'Mobile Number must be 10 or 11 digits long';
+      if ((control.value.length < 10) || (control.value.length > 10)) {
+        return this.mobileErrorMessage = 'Mobile Number must be exact 10 digits long';
       }
     }
   }
@@ -198,7 +198,6 @@ export class ProfessorComponent implements OnInit {
       }
       formValue['role'] = 'teacher';
       if (this.selectedProfessor) {
-        debugger;
         this.apiManager.putAPI(API.UPDATE_USER + '/' + this.selectedProfessor._id, value, this.filesToUpload)
           .subscribe((response) => {
             this.showDataGrid = true;
@@ -210,6 +209,7 @@ export class ProfessorComponent implements OnInit {
           .subscribe((response) => {
             this.showDataGrid = true;
             this.showAddEditForm = false;
+            this.getProfessorData();
             this.getProfessorData();
           });
       }

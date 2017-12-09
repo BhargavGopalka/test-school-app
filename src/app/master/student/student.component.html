@@ -40,7 +40,7 @@
       <td>{{student.firstName + ' ' + student.lastName}}</td>
       <td>{{student.applicationId ? student.applicationId : '-'}}</td>
       <td>{{student.studentClass?.className ? student.studentClass?.className : '-'}}</td>
-      <td>{{student.approveStatus}}</td>
+      <td>{{(student.approveStatus === 'pending') ? 'Pending' : student.approveStatus}}</td>
       <td>
         <button (click)="preventMultipleClick ? onChangeStatus(student) : null">{{student.isEnable}}</button>
       </td>
@@ -61,4 +61,142 @@
 
   <app-pagination (pageChange)="onPageChange($event)"
                   (numberChange)="onRecordsPerPageChange($event)"></app-pagination>
+</div>
+
+<!-- Add/Edit/View Form -->
+<div *ngIf="showAddEditForm">
+
+  <div>
+    <h3>{{formButtonMessage}} Student</h3>
+  </div>
+  <br>
+
+  <form [formGroup]="studentForm" (submit)="onAddEditStudentFrom(studentForm.value, studentForm.valid)">
+
+    <div>
+      <a>First Name</a>
+      <input type="text" placeholder="Enter First Name" formControlName="firstName">
+      <div
+        *ngIf="studentForm.controls['firstName'].touched && firstNameValidation(studentForm.controls['firstName'])"
+        style="color: red">
+        {{firstNameErrorMessage}}
+      </div>
+    </div>
+    <br>
+
+    <div>
+      <a>Last Name</a>
+      <input type="text" placeholder="Enter Last Name" formControlName="lastName">
+      <div *ngIf="studentForm.controls['lastName'].touched && lastNameValidation(studentForm.controls['lastName'])"
+           style="color: red">{{lastNameErrorMessage}}
+      </div>
+    </div>
+    <br>
+
+    <div>
+      <a>Application ID</a>
+      <input type="text" placeholder="Enter application ID" formControlName="applicationId">
+    </div>
+    <br>
+
+    <div>
+      <a>Offer Acceptance Date</a>
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker" placeholder="Enter offer acceptance date"
+               formControlName="offerAcceptanceDate"
+               [max]="maxDate">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <br>
+
+    <div>
+      <a>Year of First Job</a>
+      <select formControlName="yearOfFirstJob">
+        <option value="" disabled>Select a Year</option>
+        <option *ngFor="let year of yearList" value="{{year}}">{{year}}</option>
+      </select>
+    </div>
+    <br>
+
+    <div>
+      <a>Final Grade</a>
+      <input type="text" placeholder="Enter final grade" formControlName="finalGrade">
+    </div>
+    <br>
+
+    <div>
+      <a>Class</a>
+      <select formControlName="class">
+        <option value="" disabled>Select class</option>
+        <option *ngFor="let classes of editedClassList" value="{{classes.classId}}">{{classes.className}}</option>
+      </select>
+    </div>
+    <br>
+
+    <div>
+      <a>Student ID</a>
+      <input type="text" placeholder="Enter student ID" formControlName="studentId">
+    </div>
+    <br>
+
+    <div>
+      <a>Gender:</a>
+      <input type="radio" formControlName="gender" value="Male">Male
+      <input type="radio" formControlName="gender" value="Female">Female
+      <input type="radio" formControlName="gender" value="Other">Other
+    </div>
+    <br>
+
+    <div>
+      <a>Date of Birth</a>
+      <mat-form-field>
+        <input matInput [matDatepicker]="datepicker" placeholder="Enter date of birth" formControlName="birthDate"
+               [max]="maxDate">
+        <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+        <mat-datepicker #datepicker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <br>
+
+    <div>
+      <a>Mobile Number</a>
+      <input type="text" placeholder="Enter mobile number" formControlName="mobileNumber">
+      <div
+        *ngIf="studentForm.controls['mobileNumber'].touched && mobileValidation(studentForm.controls['mobileNumber'])"
+        style="color: red">{{mobileErrorMessage}}
+      </div>
+    </div>
+    <br>
+
+    <div>
+      <a>Email Address</a>
+      <input type="text" placeholder="Enter Email Address" formControlName="email">
+      <div *ngIf="studentForm.controls['email'].touched && emailValidation(studentForm.controls['email'])"
+           style="color: red">{{emailErrorMessage}}
+      </div>
+    </div>
+    <br>
+
+    <div>
+      <a>Address</a>
+      <input type="text" placeholder="Enter Address" formControlName="address">
+    </div>
+    <br>
+
+    <div>
+      <a>Image</a>
+      <input type="file" placeholder="Enter Image" (change)="fileChange($event)"
+             accept="image/gif, image/jpeg, image/png, image/jpg">
+    </div>
+    <br>
+
+    <div>
+      <button type="submit" *ngIf="!(formButtonMessage === 'View')">{{formButtonMessage}}</button>
+      <button type="reset" (click)="onLeaveFormView()">cancel</button>
+    </div>
+    <br>
+
+  </form>
 </div>

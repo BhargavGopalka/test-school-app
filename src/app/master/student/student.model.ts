@@ -17,7 +17,7 @@ export class Student {
   private _applicationId: string;
   private _isEnable: boolean;
   private _approveStatus: string;
-  private _studentClass: Classes;
+  private _studentClass: AllocateClass;
   private _gender: string;
   private _allocatedClass: Classes[];
 
@@ -149,11 +149,11 @@ export class Student {
     this._approveStatus = value;
   }
 
-  get studentClass(): Classes {
+  get studentClass(): AllocateClass {
     return this._studentClass;
   }
 
-  set studentClass(value: Classes) {
+  set studentClass(value: AllocateClass) {
     this._studentClass = value;
   }
 
@@ -172,4 +172,27 @@ export class Student {
   set allocatedClass(value: Classes[]) {
     this._allocatedClass = value;
   }
+}
+
+export class AllocateClass {
+  private _classId: string;
+  private _className: string;
+
+  get classId(): string {
+    return this._classId;
+  }
+
+  set classId(value: string) {
+    this._classId = value;
+  }
+
+  get className(): string {
+    return this._className;
+  }
+
+  set className(value: string) {
+    this._className = value;
+  }
+
+
 }
