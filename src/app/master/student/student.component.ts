@@ -143,7 +143,6 @@ export class StudentComponent implements OnInit {
       this.editedClassList = this.classesList.map((response) => {
         return {classId: response._id, className: response.name};
       });
-      console.log(this.editedClassList);
     }
   }
 

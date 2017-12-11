@@ -18,7 +18,7 @@ export class DepartmentComponent implements OnInit {
   showDataGrid = true;
 
   deptList: Department[];
-  departmentFrom: FormGroup;
+  departmentForm: FormGroup;
   formButtonMessage: string;
   selectedDepartment: Department;
 
@@ -33,8 +33,11 @@ export class DepartmentComponent implements OnInit {
   }
 
   createDepartmentForm(department?: Department) {
-    this.departmentFrom = new FormGroup({
-      name: new FormControl(department ? department.name : '', Validators.required)
+    this.departmentForm = new FormGroup({
+      name: new FormControl(department ? department.name : '', {
+        validators: Validators.required,
+        updateOn: 'blur'
+      })
     });
   }
 

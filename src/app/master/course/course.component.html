@@ -14,14 +14,18 @@
         <option value="" disabled>Select Department</option>
         <option *ngFor="let dept of deptList" value="{{dept._id}}">{{dept.name}}</option>
       </select>
-      <div *ngIf="deptValidation(courseForm.controls['department'])" style="color: red">{{deptErrorMessage}}</div>
+      <div *ngIf="courseForm.controls['department'].touched && deptValidation(courseForm.controls['department'])"
+           style="color: red">{{deptErrorMessage}}
+      </div>
     </div>
     <br>
 
     <div>
       <a>Course Name:</a>
       <input type="text" placeholder="Enter Course Name" formControlName="name"/>
-      <div *ngIf="courseValidation(courseForm.controls['name'])" style="color: red">{{courseErrorMessage}}</div>
+      <div *ngIf="courseForm.controls['name'].touched && courseValidation(courseForm.controls['name'])"
+           style="color: red">{{courseErrorMessage}}
+      </div>
     </div>
     <br>
 

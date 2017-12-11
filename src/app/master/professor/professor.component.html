@@ -69,16 +69,23 @@
 
 <!-- Assign classes form -->
 <div *ngIf="showAssignClassesForm">
-  <form [formGroup]="assignClassForm" (submit)="onSubmitAssignClass(assignClassForm.value, assignClassForm.valid)">
-    <div>
-      <select formControlName="classNames" multiple>
-        <option value="" disabled>Classes</option>
-        <option *ngFor="let classes of classesList" [ngValue]="classes">{{classes.name}}</option>
-      </select>
+  <form [formGroup]="assignClassForm" (submit)="onSubmitAssignClass(assignClasses)">
+    <!--<div>-->
+    <!--<select formControlName="classNames" multiple>-->
+    <!--<option value="" disabled>Classes</option>-->
+    <!--<option *ngFor="let classes of classesList" [ngValue]="classes">{{classes.name}}</option>-->
+    <!--</select>-->
 
-      <div *ngIf="classValidation(assignClassForm.controls['classNames'])" style="color: red">{{classErrorMessage}}
-      </div>
+    <!--<div-->
+    <!--*ngIf="assignClassForm.controls['classNames'].touched && classValidation(assignClassForm.controls['classNames'])"-->
+    <!--style="color: red">{{classErrorMessage}}-->
+    <!--</div>-->
+    <!--</div>-->
+    <div *ngFor="let classes of classesList">
+      <input type="checkbox" [checked]="onCheckClasses()" (change)="onCheckboxSelect(classes, $event)"
+      >{{classes.name}}
     </div>
+
     <br><br>
     <button type="submit">Add</button>
     <button type="reset" (click)="onCancelAssignClassView()">Cancel</button>

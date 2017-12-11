@@ -6,12 +6,14 @@
 <br><br>
 <!-- Add/Edit Form -->
 <div *ngIf="!showDataGrid">
-  <form [formGroup]="departmentFrom" (submit)="onSubmitDepartment(departmentFrom.value, departmentFrom.valid)">
+  <form [formGroup]="departmentForm" (submit)="onSubmitDepartment(departmentForm.value, departmentForm.valid)">
 
     <div>
       <a>Department Name:</a>
       <input type="text" placeholder="Enter Department Name" formControlName="name"/>
-      <div *ngIf="nameValidation(departmentFrom.controls['name'])" style="color: red">{{nameErrorMessage}}</div>
+      <div *ngIf="departmentForm.controls['name'].touched && nameValidation(departmentForm.controls['name'])"
+           style="color: red">{{nameErrorMessage}}
+      </div>
     </div>
     <br>
 
@@ -53,5 +55,5 @@
   </table>
 
   <app-pagination (pageChange)="page = $event; getDeptData()"
-  (numberChange)="onRecordsPerPageChange($event)"></app-pagination>
+                  (numberChange)="onRecordsPerPageChange($event)"></app-pagination>
 </div>

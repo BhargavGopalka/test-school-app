@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {API, Constant} from '../../utility/constants/constants';
 import {Professor} from './Professor.model';
 import {ApiManagerService} from '../../utility/api-manager/api-manager.service';
@@ -23,9 +23,11 @@ export class ProfessorComponent implements OnInit {
   classesList: Classes[];
   experienceList: any[] = [];
   assignClassForm: FormGroup;
+  assignClasses: Classes[] = [];
   selectedProfessor: Professor;
   professorForm: FormGroup;
   filesToUpload: any;
+  checked = 0;
 
   classErrorMessage: string;
   formButtonMessage: string;
@@ -45,7 +47,8 @@ export class ProfessorComponent implements OnInit {
   mobileErrorMessage: string;
   emailErrorMessage: string;
 
-  constructor(private apiManager: ApiManagerService) {
+  constructor(private apiManager: ApiManagerService,
+              private cdRef: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -54,6 +57,8 @@ export class ProfessorComponent implements OnInit {
     this.getClassList();
     this.createProfessorForm();
     this.getExperienceList();
+    this.createClassForm();
+    this.cdRef.detectChanges();
   }
 
   createProfessorForm(professor?) {
@@ -139,10 +144,16 @@ export class ProfessorComponent implements OnInit {
     }
   }
 
-  createClassForm(professor?) {
+  createClassForm() {
     this.assignClassForm = new FormGroup({
-      classNames: new FormControl(professor ? professor.allocatedClass : '', Validators.required)
+      classNames: new FormControl('', Validators.required)
     });
+
+    if (this.selectedProfessor) {
+      this.assignClassForm.setValue({
+        'classNames': this.assignClasses
+      });
+    }
   }
 
   classValidation(control: AbstractControl) {
@@ -231,22 +242,32 @@ export class ProfessorComponent implements OnInit {
     }
   }
 
-  onSubmitAssignClass(formValue, valid) {
-    if (valid) {
-      const allocateClasses = [];
-      for (let i = 0; i < formValue['classNames'].length; i++) {
-        const classesId = formValue['classNames'][i]._id;
-        allocateClasses.push(classesId);
-      }
-      formValue['classes'] = JSON.stringify(allocateClasses);
-      formValue['teacherId'] = this.selectedProfessor._id;
-      this.apiManager.putAPI(API.ASSIGN_CLASSES, formValue)
-        .subscribe((response) => {
-          this.showAssignClassesForm = false;
-          this.showDataGrid = true;
-          this.getProfessorData();
-        });
+  onCheckboxSelect(id, event) {
+    if (event.target.checked === true) {
+      this.assignClasses.push(id);
     }
+    if (event.target.checked === false) {
+      this.assignClasses = this.assignClasses.filter((classes) => classes._id !== id._id);
+    }
+  }
+
+  onSubmitAssignClass(value) {
+    const allocateClasses = [];
+    for (let i = 0; i < value.length; i++) {
+      const classesId = value[i]._id;
+      allocateClasses.push(classesId);
+    }
+    const formValue = {};
+    formValue['classNames'] = value;
+    formValue['classes'] = JSON.stringify(allocateClasses);
+    formValue['teacherId'] = this.selectedProfessor._id;
+    this.apiManager.putAPI(API.ASSIGN_CLASSES, formValue)
+      .subscribe((response) => {
+        this.showAssignClassesForm = false;
+        this.showDataGrid = true;
+        this.assignClasses = [];
+        this.getProfessorData();
+      });
   }
 
   onLeaveFormView() {
@@ -325,13 +346,33 @@ export class ProfessorComponent implements OnInit {
 
   onAssignClasses(professor: Professor) {
     this.selectedProfessor = professor;
-    for (let i = 0; i < professor.allocatedClass.length; i++) {
+    for (let i = 0; i < this.selectedProfessor.allocatedClass.length; i++) {
       this.selectedProfessor.allocatedClass[i]['name'] = this.selectedProfessor.allocatedClass[i]['className'];
       this.selectedProfessor.allocatedClass[i]['_id'] = this.selectedProfessor.allocatedClass[i]['classId'];
     }
-    this.createClassForm(this.selectedProfessor);
+    this.assignClasses = this.selectedProfessor.allocatedClass;
+    this.createClassForm();
     this.showAssignClassesForm = true;
     this.showDataGrid = false;
+  }
+
+  onCheckClasses() {
+    // debugger;
+    let id: string;
+    for (let i = this.checked; i < this.classesList.length; i++) {
+      id = this.classesList[i]._id;
+      for (let j = 0; j < this.assignClasses.length; j++) {
+        if (this.assignClasses[j]._id === id) {
+          this.checked = i + 1;
+          return true;
+        } else {
+          continue;
+        }
+      }
+      this.checked = i + 1;
+      return false;
+    }
+    this.checked = 0;
   }
 
   onClickSearchButton() {
