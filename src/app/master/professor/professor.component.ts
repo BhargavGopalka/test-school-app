@@ -357,7 +357,6 @@ export class ProfessorComponent implements OnInit {
   }
 
   onCheckClasses(id) {
-    // debugger;
     let exists = false;
     for (let j = 0; j < this.assignClasses.length; j++) {
       if (this.assignClasses[j]._id === id) {

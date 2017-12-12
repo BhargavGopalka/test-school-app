@@ -67,6 +67,8 @@ export class LoginComponent implements OnInit {
       this.apiManager.postAPI(API.LOGIN, formValue)
         .subscribe((response) => {
             const token = response.payload.token;
+            const adminData = JSON.stringify(response.payload.data);
+            sessionStorage.setItem('User', adminData);
             sessionStorage.setItem('Authorization', token);
             if (response.status === 200) {
               this.routes.navigate(['dashboard']);

@@ -15,6 +15,7 @@ import { ReportComponent } from './report/report.component';
 import { AttendanceComponent } from './attendance/attendance.component';
 import { ProfessorComponent } from './professor/professor.component';
 import { StudentComponent } from './student/student.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   imports: [
@@ -29,7 +30,7 @@ import { StudentComponent } from './student/student.component';
     BrowserAnimationsModule,
     RouterModule
   ],
-  declarations: [DashboardComponent, HeaderComponent, DepartmentComponent, CourseComponent, ClassesComponent, FeedbackComponent, ReportComponent, AttendanceComponent, ProfessorComponent, StudentComponent],
+  declarations: [DashboardComponent, HeaderComponent, DepartmentComponent, CourseComponent, ClassesComponent, FeedbackComponent, ReportComponent, AttendanceComponent, ProfessorComponent, StudentComponent, ProfileComponent],
   exports: [HeaderComponent]
 })
 export class MasterModule {

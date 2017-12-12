@@ -11,6 +11,8 @@ export class API {
   public static ASSIGN_CLASSES = 'user/assignClass';
   public static ADD_USER = 'user/signupByAdmin';
   public static UPDATE_USER = 'user/updateUserByAdmin';
+  public static UPDATE_ADMIN = 'user/adminUpdate';
+  public static CHANGE_PASSWORD = 'user/changePassword';
 }
 
 export class Constant {

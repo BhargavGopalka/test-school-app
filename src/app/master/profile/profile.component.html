@@ -1,0 +1,124 @@
+<br><br>
+<!-- Update Profile Form -->
+<div>
+  <fieldset>
+    <div>
+      <h3>Profile</h3>
+    </div>
+    <br>
+
+
+    <form [formGroup]="profileForm" (submit)="onUpdateAdminData(profileForm.value, profileForm.valid)">
+
+      <div>
+        <a class="nameField">First Name:</a>
+        <input type="text" class="inputField" placeholder="Enter First Name" formControlName="firstName"/>
+        <a *ngIf="profileForm.controls['firstName'].touched && firstNameValidation(profileForm.controls['firstName'])"
+           style="color: red">{{firstNameErrorMessage}}
+        </a>
+      </div>
+      <br>
+
+      <div>
+        <a class="nameField">Last Name:</a>
+        <input type="text" class="inputField" placeholder="Enter Last Name" formControlName="lastName"/>
+        <a *ngIf="profileForm.controls['lastName'].touched && lastNameValidation(profileForm.controls['lastName'])"
+           style="color: red">{{lastNameErrorMessage}}
+        </a>
+      </div>
+      <br>
+
+      <div>
+        <a class="nameField">Email:</a>
+        <input type="text" class="inputField" placeholder="Enter Email Address" formControlName="email">
+        <a *ngIf="profileForm.controls['email'].touched && emailValidation(profileForm.controls['email'])"
+           style="color: red">{{emailErrorMessage}}
+        </a>
+      </div>
+      <br>
+
+      <div>
+        <a class="nameField">Mobile Number:</a>
+        <input type="text" class="inputField" placeholder="Enter mobile number" formControlName="mobileNumber">
+        <a
+          *ngIf="profileForm.controls['mobileNumber'].touched && mobileValidation(profileForm.controls['mobileNumber'])"
+          style="color: red">{{mobileErrorMessage}}
+        </a>
+      </div>
+      <br>
+
+      <div>
+        <a class="nameField">Image</a>
+        <input type="file" class="inputField" placeholder="Enter Image" (change)="fileChange($event)"
+               accept="image/gif, image/jpeg, image/png, image/jpg">
+      </div>
+      <br>
+
+      <div>
+        <button type="submit">Update</button>
+        <button type="button" (click)="onCancelProfileForm()">Cancel</button>
+      </div>
+      <br>
+
+    </form>
+  </fieldset>
+</div>
+<br><br>
+
+<!-- Change Password Form -->
+<div>
+  <fieldset>
+    <div>
+      <h3>Change Password</h3>
+    </div>
+    <br>
+
+
+    <form [formGroup]="passwordForm" (submit)="onUpdateAdminPassword(passwordForm.value, passwordForm.valid)">
+
+      <div>
+        <a class="nameField">Old Password:</a>
+        <input type="password" class="inputField" placeholder="Enter Old Password" formControlName="oldPassword"/>
+        <a
+          *ngIf="passwordForm.controls['oldPassword'].touched && oldPasswordValidation(passwordForm.controls['oldPassword'])"
+          style="color: red">{{oldPasswordErrorMessage}}
+        </a>
+      </div>
+      <br>
+
+      <div>
+        <a class="nameField">New Password:</a>
+        <input type="password" class="inputField" placeholder="Enter new password" formControlName="newPassword"/>
+        <a
+          *ngIf="passwordForm.controls['newPassword'].touched && newPasswordValidation(passwordForm.controls['newPassword'])"
+          style="color: red">{{newPasswordErrorMessage}}
+        </a>
+      </div>
+      <br>
+
+      <div>
+        <a class="nameField">Confirm Password:</a>
+        <input type="password" class="inputField" placeholder="Enter confirm password" formControlName="confirmPassword"/>
+        <a
+          *ngIf="passwordForm.controls['confirmPassword'].touched && confirmPassValidation()"
+          style="color: red">{{confirmPasswordErrorMessage}}
+        </a>
+      </div>
+      <br>
+
+      <!--<div>-->
+        <!--<a class="nameField">Confirm Password:</a>-->
+        <!--<input type="password" class="inputField" placeholder="Enter confirm Password" [value]="cPass" (change)="confirmPasswordValidation($event.target.value)">-->
+        <!--<a *ngIf="passwordConfirm === false" style="color: red">{{confirmPasswordErrorMessage}}</a>-->
+      <!--</div>-->
+      <!--<br>-->
+
+      <div>
+        <button type="submit">Update</button>
+        <button type="reset" (click)="onCancelPasswordForm()">Cancel</button>
+      </div>
+      <br>
+
+    </form>
+  </fieldset>
+</div>

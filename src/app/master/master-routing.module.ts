@@ -9,8 +9,9 @@ import {ClassesComponent} from './classes/classes.component';
 import {FeedbackComponent} from './feedback/feedback.component';
 import {ReportComponent} from './report/report.component';
 import {AttendanceComponent} from './attendance/attendance.component';
-import {ProfessorComponent} from "./professor/professor.component";
-import {StudentComponent} from "./student/student.component";
+import {ProfessorComponent} from './professor/professor.component';
+import {StudentComponent} from './student/student.component';
+import {ProfileComponent} from './profile/profile.component';
 
 const routes: Routes = [
   {
@@ -56,6 +57,11 @@ const routes: Routes = [
   {
     path: 'student',
     component: StudentComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent,
     canActivate: [AuthGuard]
   }
 ];
