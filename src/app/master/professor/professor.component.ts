@@ -58,7 +58,6 @@ export class ProfessorComponent implements OnInit {
     this.createProfessorForm();
     this.getExperienceList();
     this.createClassForm();
-    this.cdRef.detectChanges();
   }
 
   createProfessorForm(professor?) {
@@ -345,6 +344,7 @@ export class ProfessorComponent implements OnInit {
   }
 
   onAssignClasses(professor: Professor) {
+    this.checked = 0;
     this.selectedProfessor = professor;
     for (let i = 0; i < this.selectedProfessor.allocatedClass.length; i++) {
       this.selectedProfessor.allocatedClass[i]['name'] = this.selectedProfessor.allocatedClass[i]['className'];
@@ -356,23 +356,16 @@ export class ProfessorComponent implements OnInit {
     this.showDataGrid = false;
   }
 
-  onCheckClasses() {
+  onCheckClasses(id) {
     // debugger;
-    let id: string;
-    for (let i = this.checked; i < this.classesList.length; i++) {
-      id = this.classesList[i]._id;
-      for (let j = 0; j < this.assignClasses.length; j++) {
-        if (this.assignClasses[j]._id === id) {
-          this.checked = i + 1;
-          return true;
-        } else {
-          continue;
-        }
+    let exists = false;
+    for (let j = 0; j < this.assignClasses.length; j++) {
+      if (this.assignClasses[j]._id === id) {
+        exists = true;
+        break;
       }
-      this.checked = i + 1;
-      return false;
     }
-    this.checked = 0;
+    return exists;
   }
 
   onClickSearchButton() {

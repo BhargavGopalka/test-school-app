@@ -82,8 +82,8 @@
     <!--</div>-->
     <!--</div>-->
     <div *ngFor="let classes of classesList">
-      <input type="checkbox" [checked]="onCheckClasses()" (change)="onCheckboxSelect(classes, $event)"
-      >{{classes.name}}
+      <input type="checkbox" [checked]="onCheckClasses(classes._id)"
+             (change)="onCheckboxSelect(classes, $event)">{{classes.name}}
     </div>
 
     <br><br>
