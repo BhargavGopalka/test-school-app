@@ -15,6 +15,11 @@ export class API {
   public static CHANGE_PASSWORD = 'user/changePassword';
 }
 
+export class IMAGEURLS {
+public static BASE_URL = 'http://gifkar.cloudapp.net:3002/';
+public static USER = IMAGEURLS.BASE_URL + 'user/';
+}
+
 export class Constant {
   public static PAGINATION_ARRAY = [10, 20, 30];
   public static RECORDS_PER_PAGE = Constant.PAGINATION_ARRAY[0];

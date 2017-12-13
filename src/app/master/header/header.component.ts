@@ -1,5 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
+import {ApiManagerService} from "../../utility/api-manager/api-manager.service";
 
 @Component({
   selector: 'app-header',
@@ -8,10 +9,23 @@ import {Router} from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(private routes: Router) {
+  isLoading = true;
+
+  constructor(private routes: Router,
+              private apiManager: ApiManagerService,
+              private cdRef: ChangeDetectorRef) {
   }
 
   ngOnInit() {
+    this.settingLoader();
+  }
+
+  private settingLoader() {
+    this.apiManager.getLoader()
+      .subscribe((loading) => {
+        this.isLoading = loading;
+        this.cdRef.detectChanges();
+      });
   }
 
   onLogOut() {

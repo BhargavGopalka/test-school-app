@@ -6,6 +6,8 @@ import {catchError, tap} from 'rxjs/operators';
 import {Token} from '../tokens/tokens';
 import 'rxjs/add/observable/throw';
 import {ToastrService} from 'ngx-toastr';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import 'rxjs/add/operator/finally';
 
 @Injectable()
 export class ApiManagerService {
@@ -14,8 +16,30 @@ export class ApiManagerService {
               private toastr: ToastrService) {
   }
 
+  /* Getting isLoading value from header component */
+  private isLoading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
+  /* Getter and Setter Loader Methods */
+  getLoader(): Observable<boolean> {
+    return this.isLoading.asObservable();
+  }
+
+  setLoader(value: boolean) {
+    this.isLoading.next(value);
+  }
+
+  /* getting isLoading true or false from API's */
+  private showLoader() {
+    this.setLoader(true);
+  }
+
+  private hideLoader() {
+    this.setLoader(false);
+  }
+
   /* APIs */
   putAPI(endpoint: string, formValue, files?): Observable<any> {
+    this.showLoader();
     if (!files) {
       return this.http.put<any>(API.baseURL + endpoint, formValue, {headers: this.httpOptions})
         .pipe(
@@ -23,7 +47,10 @@ export class ApiManagerService {
             this.showToastr(response, true);
           }),
           catchError(this.onCatch)
-        );
+        )
+        .finally(() => {
+          this.hideLoader();
+        });
     } else {
       const singleFile: File = files[0];
       const formData: FormData = new FormData();
@@ -41,21 +68,29 @@ export class ApiManagerService {
             this.showToastr(response, true);
           }),
           catchError(this.onCatch)
-        );
+        )
+        .finally(() => {
+        this.hideLoader();
+        });
     }
   }
 
   deleteAPI(endpoint: string): Observable<any> {
+    this.showLoader();
     return this.http.delete<any>(API.baseURL + endpoint, {headers: this.httpOptions})
       .pipe(
         tap((response) => {
           this.showToastr(response, true);
         }),
         catchError(this.onCatch)
-      );
+      )
+      .finally(() => {
+      this.hideLoader();
+      });
   }
 
   getAPI(endpoint: string, queryParams?, searchParams?): Observable<any> {
+    this.showLoader();
     queryParams ? queryParams : (queryParams = {});
     (searchParams) ? (queryParams['search'] = JSON.stringify(searchParams)) : '';
     let params = new HttpParams();
@@ -74,10 +109,14 @@ export class ApiManagerService {
           this.showToastr(response, false);
         }),
         catchError(this.onCatch)
-      );
+      )
+      .finally(() => {
+      this.hideLoader();
+      });
   }
 
   postAPI(endpoint: string, formValue, files?): Observable<any> {
+    this.showLoader();
     const formData: FormData = new FormData();
     if (formValue !== '' && formValue !== undefined && formValue !== null) {
       for (const property in formValue) {
@@ -94,7 +133,10 @@ export class ApiManagerService {
             this.showToastr(response, true);
           }),
           catchError(this.onCatch)
-        );
+        )
+        .finally(() => {
+        this.hideLoader();
+        });
     } else {
       const singleFile: File = files[0];
       formData.append('image', singleFile, singleFile.name);
@@ -104,7 +146,10 @@ export class ApiManagerService {
             this.showToastr(response, true);
           }),
           catchError(this.onCatch)
-        );
+        )
+        .finally(() => {
+        this.hideLoader();
+        });
     }
   }
 

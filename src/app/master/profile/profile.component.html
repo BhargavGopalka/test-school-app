@@ -49,6 +49,7 @@
 
       <div>
         <a class="nameField">Image</a>
+        <img [src]="image_url">
         <input type="file" class="inputField" placeholder="Enter Image" (change)="fileChange($event)"
                accept="image/gif, image/jpeg, image/png, image/jpg">
       </div>
@@ -98,7 +99,8 @@
 
       <div>
         <a class="nameField">Confirm Password:</a>
-        <input type="password" class="inputField" placeholder="Enter confirm password" formControlName="confirmPassword"/>
+        <input type="password" class="inputField" placeholder="Enter confirm password"
+               formControlName="confirmPassword"/>
         <a
           *ngIf="passwordForm.controls['confirmPassword'].touched && confirmPassValidation()"
           style="color: red">{{confirmPasswordErrorMessage}}
@@ -107,9 +109,9 @@
       <br>
 
       <!--<div>-->
-        <!--<a class="nameField">Confirm Password:</a>-->
-        <!--<input type="password" class="inputField" placeholder="Enter confirm Password" [value]="cPass" (change)="confirmPasswordValidation($event.target.value)">-->
-        <!--<a *ngIf="passwordConfirm === false" style="color: red">{{confirmPasswordErrorMessage}}</a>-->
+      <!--<a class="nameField">Confirm Password:</a>-->
+      <!--<input type="password" class="inputField" placeholder="Enter confirm Password" [value]="cPass" (change)="confirmPasswordValidation($event.target.value)">-->
+      <!--<a *ngIf="passwordConfirm === false" style="color: red">{{confirmPasswordErrorMessage}}</a>-->
       <!--</div>-->
       <!--<br>-->
 

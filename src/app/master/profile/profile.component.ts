@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Profile} from './profile.model';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ApiManagerService} from '../../utility/api-manager/api-manager.service';
-import {API} from '../../utility/constants/constants';
+import {API, IMAGEURLS} from '../../utility/constants/constants';
 
 @Component({
   selector: 'app-profile',
@@ -16,6 +16,7 @@ export class ProfileComponent implements OnInit {
   profileForm: FormGroup;
   passwordForm: FormGroup;
   filesToUpload: any;
+  image_url = '';
 
   firstNameErrorMessage: string;
   lastNameErrorMessage: string;
@@ -32,6 +33,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     this.adminData = JSON.parse(sessionStorage.getItem('User'));
+    this.image_url = this.adminData.image ? (IMAGEURLS.USER + this.adminData.image) : 'assets/img/profilePlaceholder.jpg';
     this.createProfileForm(this.adminData);
     this.createPasswordForm();
   }
@@ -187,6 +189,12 @@ export class ProfileComponent implements OnInit {
 
   fileChange(event) {
     const fileList: FileList = event.target.files;
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (loadEvent: any) => {
+      this.image_url = loadEvent.target.result;
+    };
+    reader.readAsDataURL(file);
     this.filesToUpload = fileList;
   }
 
