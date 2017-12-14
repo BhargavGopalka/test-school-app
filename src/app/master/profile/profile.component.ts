@@ -32,7 +32,7 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.adminData = JSON.parse(sessionStorage.getItem('User'));
+    this.adminData = JSON.parse(atob(sessionStorage.getItem('User')));
     this.image_url = this.adminData.image ? (IMAGEURLS.USER + this.adminData.image) : 'assets/img/profilePlaceholder.jpg';
     this.createProfileForm(this.adminData);
     this.createPasswordForm();
@@ -89,7 +89,7 @@ export class ProfileComponent implements OnInit {
         return this.mobileErrorMessage = 'Mobile Number is required';
       }
       if ((control.value.length < 10) || (control.value.length > 10)) {
-        return this.mobileErrorMessage = 'Mobile Number must be exact 10 digits long';
+        return this.mobileErrorMessage = 'Mobile Number must be of exact 10 digits long';
       }
     }
   }
@@ -137,7 +137,7 @@ export class ProfileComponent implements OnInit {
           this.adminData = response.payload.data;
           this.createProfileForm(this.adminData);
           const updateAdmin = JSON.stringify(response.payload.data);
-          sessionStorage.setItem('User', updateAdmin);
+          sessionStorage.setItem('User', btoa(updateAdmin));
         });
     }
   }
@@ -203,7 +203,6 @@ export class ProfileComponent implements OnInit {
   }
 
   onCancelPasswordForm() {
-    // debugger;
     this.createPasswordForm();
     this.cPass = null;
     this.confirmPasswordErrorMessage = '';

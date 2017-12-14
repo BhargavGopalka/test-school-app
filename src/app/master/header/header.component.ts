@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {ApiManagerService} from "../../utility/api-manager/api-manager.service";
+import {NavigationEnd, Router} from '@angular/router';
+import {ApiManagerService} from '../../utility/api-manager/api-manager.service';
 
 @Component({
   selector: 'app-header',

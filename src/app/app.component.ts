@@ -12,7 +12,9 @@ export class AppComponent implements OnInit {
   }
 
   get headerView(): Boolean {
-    const token = sessionStorage.getItem('Authorization');
+    const checkToken = sessionStorage.getItem('Authorization');
+    const token = checkToken ? atob(checkToken) : null;
+
     if (token) {
       this.showHeader = true;
     } else {

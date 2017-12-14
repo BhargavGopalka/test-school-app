@@ -68,8 +68,8 @@ export class LoginComponent implements OnInit {
         .subscribe((response) => {
             const token = response.payload.token;
             const adminData = JSON.stringify(response.payload.data);
-            sessionStorage.setItem('User', adminData);
-            sessionStorage.setItem('Authorization', token);
+            sessionStorage.setItem('User', btoa(adminData));
+            sessionStorage.setItem('Authorization', btoa(token));
             if (response.status === 200) {
               this.routes.navigate(['dashboard']);
             }

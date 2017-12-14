@@ -3,6 +3,7 @@ import {Department} from './department.model';
 import {ApiManagerService} from '../../utility/api-manager/api-manager.service';
 import {API, Constant} from '../../utility/constants/constants';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-department',
@@ -25,7 +26,8 @@ export class DepartmentComponent implements OnInit {
   nameErrorMessage: string;
   statusMessage = 'Loading Data. Please wait ...';
 
-  constructor(private apiManager: ApiManagerService) {
+  constructor(private apiManager: ApiManagerService,
+              private routes: Router) {
   }
 
   ngOnInit() {

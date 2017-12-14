@@ -70,7 +70,7 @@ export class ApiManagerService {
           catchError(this.onCatch)
         )
         .finally(() => {
-        this.hideLoader();
+          this.hideLoader();
         });
     }
   }
@@ -85,7 +85,7 @@ export class ApiManagerService {
         catchError(this.onCatch)
       )
       .finally(() => {
-      this.hideLoader();
+        this.hideLoader();
       });
   }
 
@@ -111,7 +111,7 @@ export class ApiManagerService {
         catchError(this.onCatch)
       )
       .finally(() => {
-      this.hideLoader();
+        this.hideLoader();
       });
   }
 
@@ -135,7 +135,7 @@ export class ApiManagerService {
           catchError(this.onCatch)
         )
         .finally(() => {
-        this.hideLoader();
+          this.hideLoader();
         });
     } else {
       const singleFile: File = files[0];
@@ -148,7 +148,7 @@ export class ApiManagerService {
           catchError(this.onCatch)
         )
         .finally(() => {
-        this.hideLoader();
+          this.hideLoader();
         });
     }
   }
@@ -156,7 +156,7 @@ export class ApiManagerService {
   /* Headers */
   get httpOptions(): HttpHeaders {
     const Authorization = sessionStorage.getItem('Authorization');
-    const token = (Authorization ? Authorization : Token.STATIC_TOKEN);
+    const token = (Authorization ? atob(Authorization) : Token.STATIC_TOKEN);
     const headers = new HttpHeaders({'Authorization': `Bearer ` + token});
     return headers;
   }
