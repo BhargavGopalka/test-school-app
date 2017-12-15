@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {API, Constant} from '../../utility/constants/constants';
 import {Professor} from './Professor.model';
 import {ApiManagerService} from '../../utility/api-manager/api-manager.service';
@@ -6,13 +6,14 @@ import {Department} from '../department/department.model';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Classes} from '../classes/classes.model';
 import * as moment from 'moment';
+import {ISubscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-professor',
   templateUrl: './professor.component.html',
   styleUrls: ['./professor.component.css']
 })
-export class ProfessorComponent implements OnInit {
+export class ProfessorComponent implements OnInit, OnDestroy {
 
   page = 1;
   recordsPerPage = Constant.RECORDS_PER_PAGE;
@@ -46,18 +47,35 @@ export class ProfessorComponent implements OnInit {
   departmentErrorMessage: string;
   mobileErrorMessage: string;
   emailErrorMessage: string;
+  private refreshPage: ISubscription;
 
-  constructor(private apiManager: ApiManagerService,
-              private cdRef: ChangeDetectorRef) {
+  constructor(private apiManager: ApiManagerService) {
   }
 
   ngOnInit() {
+    this.initialMethods();
+    this.reloadProfessor();
+  }
+
+  ngOnDestroy() {
+    if (this.refreshPage) {
+      this.refreshPage.unsubscribe();
+    }
+  }
+
+  initialMethods() {
     this.getProfessorData();
     this.getDepartmentData();
     this.getClassList();
     this.createProfessorForm();
     this.getExperienceList();
     this.createClassForm();
+  }
+
+  reloadProfessor() {
+    this.refreshPage = this.apiManager.getLink().subscribe(() => {
+      this.initialMethods();
+    });
   }
 
   createProfessorForm(professor?) {

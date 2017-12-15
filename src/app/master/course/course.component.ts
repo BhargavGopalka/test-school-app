@@ -1,16 +1,17 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {API, Constant} from '../../utility/constants/constants';
 import {ApiManagerService} from '../../utility/api-manager/api-manager.service';
 import {Course} from './course.model';
 import {Department} from '../department/department.model';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
+import {ISubscription} from "rxjs/Subscription";
 
 @Component({
   selector: 'app-course',
   templateUrl: './course.component.html',
   styleUrls: ['./course.component.css']
 })
-export class CourseComponent implements OnInit {
+export class CourseComponent implements OnInit, OnDestroy {
 
   page = 1;
   recordsPerPage = Constant.RECORDS_PER_PAGE;
@@ -26,13 +27,31 @@ export class CourseComponent implements OnInit {
   formButtonMessage: string;
   showDataGrid = true;
   statusMessage = 'Loading Data. Please wait ...';
+  private refreshPage: ISubscription;
 
   constructor(private apiManager: ApiManagerService) {
   }
 
   ngOnInit() {
+    this.initialMethods();
+    this.reloadCourse();
+  }
+
+  ngOnDestroy() {
+    if (this.refreshPage) {
+      this.refreshPage.unsubscribe();
+    }
+  }
+
+  initialMethods() {
     this.getCourseData();
     this.getDepartmentData();
+  }
+
+  reloadCourse() {
+    this.refreshPage = this.apiManager.getLink().subscribe(() => {
+      this.initialMethods();
+    });
   }
 
   createCourseForm(course: Course) {

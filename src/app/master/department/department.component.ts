@@ -1,16 +1,17 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Department} from './department.model';
 import {ApiManagerService} from '../../utility/api-manager/api-manager.service';
 import {API, Constant} from '../../utility/constants/constants';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
+import {ISubscription} from "rxjs/Subscription";
 
 @Component({
   selector: 'app-department',
   templateUrl: './department.component.html',
   styleUrls: ['./department.component.css']
 })
-export class DepartmentComponent implements OnInit {
+export class DepartmentComponent implements OnInit, OnDestroy {
 
   page = 1;
   recordsPerPage = Constant.RECORDS_PER_PAGE;
@@ -25,13 +26,31 @@ export class DepartmentComponent implements OnInit {
 
   nameErrorMessage: string;
   statusMessage = 'Loading Data. Please wait ...';
+  private refreshPage: ISubscription;
 
   constructor(private apiManager: ApiManagerService,
               private routes: Router) {
   }
 
   ngOnInit() {
+    this.initialMethods();
+    this.reloadDepartment();
+  }
+
+  ngOnDestroy() {
+    if (this.refreshPage) {
+      this.refreshPage.unsubscribe();
+    }
+  }
+
+  initialMethods() {
     this.getDeptData();
+  }
+
+  reloadDepartment() {
+    this.refreshPage = this.apiManager.getLink().subscribe(() => {
+      this.initialMethods();
+    });
   }
 
   createDepartmentForm(department?: Department) {

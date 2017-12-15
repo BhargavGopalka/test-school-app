@@ -1,17 +1,18 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {API, Constant} from '../../utility/constants/constants';
 import {Report} from '../report/report.model';
 import {ApiManagerService} from '../../utility/api-manager/api-manager.service';
 import {Classes} from '../classes/classes.model';
 import {ToastrService} from 'ngx-toastr';
 import * as moment from 'moment';
+import {ISubscription} from "rxjs/Subscription";
 
 @Component({
   selector: 'app-attendance',
   templateUrl: './attendance.component.html',
   styleUrls: ['./attendance.component.css']
 })
-export class AttendanceComponent implements OnInit {
+export class AttendanceComponent implements OnInit, OnDestroy {
 
   page = 1;
   recordsPerPage = Constant.RECORDS_PER_PAGE;
@@ -28,15 +29,33 @@ export class AttendanceComponent implements OnInit {
   filterClass = '';
   filterProfessor: any[] = [];
   statusMessage = 'No Attendance Report';
+  private refreshPage: ISubscription;
 
   constructor(private apiManager: ApiManagerService,
               private toastr: ToastrService) {
   }
 
   ngOnInit() {
+    this.initialMethods();
+    this.reloadAttendance();
+  }
+
+  ngOnDestroy() {
+    if (this.refreshPage) {
+      this.refreshPage.unsubscribe();
+    }
+  }
+
+  initialMethods() {
     this.getAttendanceData();
     this.getClassData();
     this.getProfessorList();
+  }
+
+  reloadAttendance() {
+    this.refreshPage = this.apiManager.getLink().subscribe(() => {
+      this.initialMethods();
+    });
   }
 
   getAttendanceData() {

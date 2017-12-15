@@ -1,14 +1,14 @@
 <br>
 <div>
-  <button routerLink="dashboard" routerLinkActive="active">Dashboard</button>
-  <button routerLink="professor" routerLinkActive="active">Professor Management</button>
-  <button routerLink="student">Student Management</button>
-  <button routerLink="attendance">Attendance</button>
-  <button routerLink="department">Department</button>
-  <button routerLink="course">Course</button>
-  <button routerLink="class">Class</button>
-  <button routerLink="reports">Reports</button>
-  <button routerLink="feedback">Feedback</button>
+  <button routerLink="dashboard" routerLinkActive="active" (click)="onClick('dashboard')">Dashboard</button>
+  <button routerLink="professor" routerLinkActive="active" (click)="onClick('professor')">Professor Management</button>
+  <button routerLink="student" routerLinkActive="active" (click)="onClick('student')">Student Management</button>
+  <button routerLink="attendance" routerLinkActive="active" (click)="onClick('attendance')">Attendance</button>
+  <button routerLink="department" routerLinkActive="active" (click)="onClick('department')">Department</button>
+  <button routerLink="course" routerLinkActive="active" (click)="onClick('course')">Course</button>
+  <button routerLink="class" routerLinkActive="active" (click)="onClick('class')">Class</button>
+  <button routerLink="reports" routerLinkActive="active" (click)="onClick('reports')">Reports</button>
+  <button routerLink="feedback" routerLinkActive="active" (click)="onClick('feedback')">Feedback</button>
   <button routerLink="profile">Profile</button>
   <button type="submit" (click)="onLogOut()">Logout</button>
 </div>

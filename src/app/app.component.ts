@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {Router, NavigationEnd} from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -7,6 +8,8 @@ import {Component, OnInit} from '@angular/core';
 })
 export class AppComponent implements OnInit {
   showHeader = false;
+
+  constructor(private _router: Router) {}
 
   ngOnInit() {
   }

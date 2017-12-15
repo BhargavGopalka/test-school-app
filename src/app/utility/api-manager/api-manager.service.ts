@@ -16,6 +16,8 @@ export class ApiManagerService {
               private toastr: ToastrService) {
   }
 
+  private reloadComponents: BehaviorSubject<string> = new BehaviorSubject<string>('');
+
   /* Getting isLoading value from header component */
   private isLoading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
@@ -26,6 +28,24 @@ export class ApiManagerService {
 
   setLoader(value: boolean) {
     this.isLoading.next(value);
+  }
+
+  /* Reload Components */
+
+  getLink(): Observable<string> {
+    if (this.reloadComponents.getValue() === '') {
+      this.reloadComponents = new BehaviorSubject(sessionStorage.getItem('RouteLink') || '');
+    }
+    return this.reloadComponents.asObservable();
+  }
+
+  setLink(value: string) {
+    const currentRouter = sessionStorage.getItem('RouteLink');
+    console.log(currentRouter);
+    if (currentRouter === value) {
+      this.reloadComponents.next(value);
+    }
+    sessionStorage.setItem('RouteLink', value);
   }
 
   /* getting isLoading true or false from API's */

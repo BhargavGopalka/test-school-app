@@ -1,16 +1,17 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Report} from './report.model';
 import {API, Constant} from '../../utility/constants/constants';
 import {ApiManagerService} from '../../utility/api-manager/api-manager.service';
 import {Classes} from '../classes/classes.model';
 import * as moment from 'moment';
+import {ISubscription} from "rxjs/Subscription";
 
 @Component({
   selector: 'app-report',
   templateUrl: './report.component.html',
   styleUrls: ['./report.component.css']
 })
-export class ReportComponent implements OnInit {
+export class ReportComponent implements OnInit, OnDestroy {
 
   page = 1;
   recordsPerPage = Constant.RECORDS_PER_PAGE;
@@ -28,14 +29,32 @@ export class ReportComponent implements OnInit {
 
   showDataGrid = true;
   statusMessage = 'Loading Data. Please wait ...';
+  private refreshPage: ISubscription;
 
   constructor(private apiManager: ApiManagerService) {
   }
 
   ngOnInit() {
+    this.initialMethods();
+    this.reloadReport();
+  }
+
+  ngOnDestroy() {
+    if (this.refreshPage) {
+      this.refreshPage.unsubscribe();
+    }
+  }
+
+  initialMethods() {
     this.getReportData();
     this.getClassList();
     this.getStudentList();
+  }
+
+  reloadReport() {
+    this.refreshPage = this.apiManager.getLink().subscribe(() => {
+      this.initialMethods();
+    });
   }
 
   getReportData() {

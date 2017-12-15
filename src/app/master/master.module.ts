@@ -11,11 +11,11 @@ import {ClassesComponent} from './classes/classes.component';
 import {FeedbackComponent} from './feedback/feedback.component';
 import {MatDatepickerModule, MatFormFieldModule, MatInputModule, MatNativeDateModule} from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { ReportComponent } from './report/report.component';
-import { AttendanceComponent } from './attendance/attendance.component';
-import { ProfessorComponent } from './professor/professor.component';
-import { StudentComponent } from './student/student.component';
-import { ProfileComponent } from './profile/profile.component';
+import {ReportComponent} from './report/report.component';
+import {AttendanceComponent} from './attendance/attendance.component';
+import {ProfessorComponent} from './professor/professor.component';
+import {StudentComponent} from './student/student.component';
+import {ProfileComponent} from './profile/profile.component';
 
 @NgModule({
   imports: [

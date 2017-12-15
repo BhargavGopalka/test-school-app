@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {API, Constant} from '../../utility/constants/constants';
 import {ApiManagerService} from '../../utility/api-manager/api-manager.service';
 import {Student} from './student.model';
@@ -6,13 +6,14 @@ import {Classes} from '../classes/classes.model';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import 'rxjs/add/operator/map';
 import * as moment from 'moment';
+import {ISubscription} from "rxjs/Subscription";
 
 @Component({
   selector: 'app-student',
   templateUrl: './student.component.html',
   styleUrls: ['./student.component.css']
 })
-export class StudentComponent implements OnInit {
+export class StudentComponent implements OnInit, OnDestroy {
 
   page = 1;
   recordsPerPage = Constant.RECORDS_PER_PAGE;
@@ -40,15 +41,34 @@ export class StudentComponent implements OnInit {
   mobileErrorMessage: string;
   emailErrorMessage: string;
   statusMessage = 'Loading Data. Please wait ...';
+  private refreshPage: ISubscription;
 
   constructor(private apiManager: ApiManagerService) {
   }
 
   ngOnInit() {
+    this.initialMethods();
+    this.reloadStudent();
+  }
+
+  ngOnDestroy() {
+    if (this.refreshPage) {
+      this.refreshPage.unsubscribe();
+    }
+  }
+
+  initialMethods() {
     this.getStudentData();
     this.getClassData();
     this.createStudentForm();
     this.getYearList();
+  }
+
+  reloadStudent() {
+    this.refreshPage = this.apiManager.getLink()
+      .subscribe(() => {
+        this.initialMethods();
+      });
   }
 
   createStudentForm(student?) {

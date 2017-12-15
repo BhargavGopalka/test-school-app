@@ -1,5 +1,5 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {NavigationEnd, Router} from '@angular/router';
+import {ChangeDetectorRef, Component, OnInit, Output, EventEmitter} from '@angular/core';
+import {Router} from '@angular/router';
 import {ApiManagerService} from '../../utility/api-manager/api-manager.service';
 
 @Component({
@@ -31,6 +31,10 @@ export class HeaderComponent implements OnInit {
   onLogOut() {
     sessionStorage.clear();
     this.routes.navigate(['login']);
+  }
+
+  onClick(value) {
+    this.apiManager.setLink(value);
   }
 
 }

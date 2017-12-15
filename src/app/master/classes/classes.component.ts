@@ -1,16 +1,17 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Classes} from './classes.model';
 import {API, Constant} from '../../utility/constants/constants';
 import {ApiManagerService} from '../../utility/api-manager/api-manager.service';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Course} from '../course/course.model';
+import {ISubscription} from "rxjs/Subscription";
 
 @Component({
   selector: 'app-classes',
   templateUrl: './classes.component.html',
   styleUrls: ['./classes.component.css']
 })
-export class ClassesComponent implements OnInit {
+export class ClassesComponent implements OnInit, OnDestroy {
 
   page = 1;
   recordsPerPage = Constant.RECORDS_PER_PAGE;
@@ -26,13 +27,31 @@ export class ClassesComponent implements OnInit {
   selectedClass: Classes;
   formButtonMessage: string;
   statusMessage = 'Loading Data. Please wait ...';
+  private refreshPage: ISubscription;
 
   constructor(private apiManager: ApiManagerService) {
   }
 
   ngOnInit() {
+    this.initialMethods();
+    this.reloadClasses();
+  }
+
+  ngOnDestroy() {
+    if (this.refreshPage) {
+      this.refreshPage.unsubscribe();
+    }
+  }
+
+  initialMethods() {
     this.getClassData();
     this.getCourseData();
+  }
+
+  reloadClasses() {
+    this.refreshPage = this.apiManager.getLink().subscribe(() => {
+      this.initialMethods();
+    });
   }
 
   createClassForm(classes?: Classes) {

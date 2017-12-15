@@ -1,16 +1,17 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {API, Constant} from '../../utility/constants/constants';
 import {Feedback} from './feedback.model';
 import {ApiManagerService} from '../../utility/api-manager/api-manager.service';
 import {Classes} from '../classes/classes.model';
 import * as moment from 'moment';
+import {ISubscription} from "rxjs/Subscription";
 
 @Component({
   selector: 'app-feedback',
   templateUrl: './feedback.component.html',
   styleUrls: ['./feedback.component.css']
 })
-export class FeedbackComponent implements OnInit {
+export class FeedbackComponent implements OnInit, OnDestroy {
 
   page = 1;
   recordsPerPage = Constant.RECORDS_PER_PAGE;
@@ -28,14 +29,32 @@ export class FeedbackComponent implements OnInit {
   selectedFeedback: Feedback;
   classList: Classes[];
   professorList: any[];
+  private refreshPage: ISubscription;
 
   constructor(private apiManager: ApiManagerService) {
   }
 
   ngOnInit() {
+    this.initialMethods();
+    this.reloadFeedback();
+  }
+
+  ngOnDestroy() {
+    if (this.refreshPage) {
+      this.refreshPage.unsubscribe();
+    }
+  }
+
+  initialMethods() {
     this.getFeedbackData();
     this.getClassList();
     this.getProfessorList();
+  }
+
+  reloadFeedback() {
+    this.refreshPage = this.apiManager.getLink().subscribe(() => {
+      this.initialMethods();
+    });
   }
 
   getClassList() {
