@@ -35,14 +35,11 @@ export class FeedbackComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.initialMethods();
     this.reloadFeedback();
   }
 
   ngOnDestroy() {
-    if (this.refreshPage) {
-      this.refreshPage.unsubscribe();
-    }
+    this.refreshPage.unsubscribe();
   }
 
   initialMethods() {

@@ -33,14 +33,11 @@ export class CourseComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.initialMethods();
     this.reloadCourse();
   }
 
   ngOnDestroy() {
-    if (this.refreshPage) {
-      this.refreshPage.unsubscribe();
-    }
+    this.refreshPage.unsubscribe();
   }
 
   initialMethods() {

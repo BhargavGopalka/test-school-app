@@ -36,7 +36,6 @@ export class ProfessorComponent implements OnInit, OnDestroy {
   filterProfessorId = '';
   filterDepartment = '';
   showAssignClassesForm = false;
-  preventMultipleClick = true;
   showDataGrid = true;
   showAddEditForm = false;
   maxDate = new Date();
@@ -53,14 +52,11 @@ export class ProfessorComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.initialMethods();
     this.reloadProfessor();
   }
 
   ngOnDestroy() {
-    if (this.refreshPage) {
-      this.refreshPage.unsubscribe();
-    }
+    this.refreshPage.unsubscribe();
   }
 
   initialMethods() {
@@ -192,7 +188,6 @@ export class ProfessorComponent implements OnInit, OnDestroy {
       .subscribe((response) => {
         this.professorList = response.payload.data;
         this.totalRecords = response.pager.totalRecords;
-        this.preventMultipleClick = true;
       });
   }
 
@@ -250,13 +245,10 @@ export class ProfessorComponent implements OnInit, OnDestroy {
   }
 
   onChangeStatus(professor: Professor) {
-    if (this.preventMultipleClick) {
-      this.apiManager.deleteAPI(API.USER + '/' + professor._id + '/' + !professor.isEnable)
-        .subscribe((response) => {
-          this.getProfessorData();
-        });
-      this.preventMultipleClick = false;
-    }
+    this.apiManager.deleteAPI(API.USER + '/' + professor._id + '/' + !professor.isEnable)
+      .subscribe((response) => {
+        this.getProfessorData();
+      });
   }
 
   onCheckboxSelect(id, event) {

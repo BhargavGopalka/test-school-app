@@ -130,7 +130,7 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  onUpdateAdminData(value, valid) {
+    onUpdateAdminData(value, valid) {
     if (valid) {
       this.apiManager.putAPI(API.UPDATE_ADMIN, value, this.filesToUpload)
         .subscribe((response) => {

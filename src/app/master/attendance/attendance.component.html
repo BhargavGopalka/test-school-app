@@ -27,7 +27,7 @@
       </option>
     </select>
 
-    <button type="button" (click)="onClickSearchButton()">Search</button>
+    <button appDebounceClick (debounceClick)="onClickSearchButton()" [debounceTime]="300">Search</button>
     <button type="reset" (click)="onClear()">Clear</button>
   </div>
 </div>

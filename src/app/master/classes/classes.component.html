@@ -54,7 +54,8 @@
       <td>{{class.name}}</td>
       <td>{{class.courseName}}</td>
       <td>
-        <button (click)="onChangeStatus(class)">{{class.isEnable}}</button>
+        <button appDebounceClick (debounceClick)="onChangeStatus(class)" [debounceTime]="500">{{class.isEnable}}
+        </button>
       </td>
       <td>
         <button (click)="onAddEditButtonClick(class)">Edit</button>

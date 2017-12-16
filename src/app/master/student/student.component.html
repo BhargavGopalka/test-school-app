@@ -15,7 +15,7 @@
       <option *ngFor="let classes of classesList" value="{{classes._id}}">{{classes.name}}</option>
     </select>
 
-    <button type="button" (click)="onClickSearchButton()">Search</button>
+    <button appDebounceClick (debounceClick)="onClickSearchButton()" [debounceTime]="300">Search</button>
     <button type="reset" (click)="onClear()">Clear</button>
   </div>
 </div>
@@ -42,7 +42,8 @@
       <td>{{student.studentClass?.className ? student.studentClass?.className : '-'}}</td>
       <td>{{(student.approveStatus === 'pending') ? 'Pending' : student.approveStatus}}</td>
       <td>
-        <button (click)="preventMultipleClick ? onChangeStatus(student) : null">{{student.isEnable}}</button>
+        <button appDebounceClick (debounceClick)="onChangeStatus(student)" [debounceTime]="300">{{student.isEnable}}
+        </button>
       </td>
       <td>
         <button (click)="onEditViewButtonClick(student, 'Update')">Edit</button>

@@ -6,7 +6,7 @@ import {Classes} from '../classes/classes.model';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import 'rxjs/add/operator/map';
 import * as moment from 'moment';
-import {ISubscription} from "rxjs/Subscription";
+import {ISubscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-student',
@@ -33,7 +33,6 @@ export class StudentComponent implements OnInit, OnDestroy {
   formButtonMessage: string;
   showDataGrid = true;
   showAddEditForm = false;
-  preventMultipleClick = true;
 
   maxDate = new Date();
   firstNameErrorMessage: string;
@@ -47,14 +46,11 @@ export class StudentComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.initialMethods();
     this.reloadStudent();
   }
 
   ngOnDestroy() {
-    if (this.refreshPage) {
-      this.refreshPage.unsubscribe();
-    }
+    this.refreshPage.unsubscribe();
   }
 
   initialMethods() {
@@ -147,7 +143,6 @@ export class StudentComponent implements OnInit, OnDestroy {
       .subscribe((response) => {
         this.studentList = response.payload.data;
         this.totalRecords = response.pager.totalRecords;
-        this.preventMultipleClick = true;
       });
   }
 
@@ -205,13 +200,10 @@ export class StudentComponent implements OnInit, OnDestroy {
   }
 
   onChangeStatus(student: Student) {
-    if (this.preventMultipleClick) {
-      this.preventMultipleClick = false;
-      this.apiManager.deleteAPI(API.USER + '/' + student._id + '/' + !student.isEnable)
-        .subscribe((response) => {
-          this.getStudentData();
-        });
-    }
+    this.apiManager.deleteAPI(API.USER + '/' + student._id + '/' + !student.isEnable)
+      .subscribe((response) => {
+        this.getStudentData();
+      });
   }
 
   fileChange(event) {

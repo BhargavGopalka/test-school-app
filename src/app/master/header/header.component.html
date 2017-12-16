@@ -1,15 +1,38 @@
 <br>
 <div>
-  <button routerLink="dashboard" routerLinkActive="active" (click)="onClick('dashboard')">Dashboard</button>
-  <button routerLink="professor" routerLinkActive="active" (click)="onClick('professor')">Professor Management</button>
-  <button routerLink="student" routerLinkActive="active" (click)="onClick('student')">Student Management</button>
-  <button routerLink="attendance" routerLinkActive="active" (click)="onClick('attendance')">Attendance</button>
-  <button routerLink="department" routerLinkActive="active" (click)="onClick('department')">Department</button>
-  <button routerLink="course" routerLinkActive="active" (click)="onClick('course')">Course</button>
-  <button routerLink="class" routerLinkActive="active" (click)="onClick('class')">Class</button>
-  <button routerLink="reports" routerLinkActive="active" (click)="onClick('reports')">Reports</button>
-  <button routerLink="feedback" routerLinkActive="active" (click)="onClick('feedback')">Feedback</button>
-  <button routerLink="profile">Profile</button>
+  <button appDebounceClick routerLink="dashboard" routerLinkActive="active" (debounceClick)="onClick('dashboard')"
+          [debounceTime]="300">
+    Dashboard
+  </button>
+  <button appDebounceClick routerLink="professor" routerLinkActive="active" (debounceClick)="onClick('professor')"
+          [debounceTime]="300">Professor
+    Management
+  </button>
+  <button appDebounceClick routerLink="student" routerLinkActive="active" (debounceClick)="onClick('student')"
+          [debounceTime]="300">Student
+    Management
+  </button>
+  <button appDebounceClick routerLink="attendance" routerLinkActive="active" (debounceClick)="onClick('attendance')"
+          [debounceTime]="300">
+    Attendance
+  </button>
+  <button appDebounceClick routerLink="department" routerLinkActive="active" (debounceClick)="onClick('department')"
+          [debounceTime]="300">
+    Department
+  </button>
+  <button appDebounceClick routerLink="course" routerLinkActive="active" (debounceClick)="onClick('course')"
+          [debounceTime]="300">Course
+  </button>
+  <button appDebounceClick routerLink="class" routerLinkActive="active" (debounceClick)="onClick('class')"
+          [debounceTime]="300">Class
+  </button>
+  <button appDebounceClick routerLink="reports" routerLinkActive="active" (debounceClick)="onClick('reports')"
+          [debounceTime]="300">Reports
+  </button>
+  <button appDebounceClick routerLink="feedback" routerLinkActive="active" (debounceClick)="onClick('feedback')"
+          [debounceTime]="300">Feedback
+  </button>
+  <button routerLink="profile" routerLinkActive="active">Profile</button>
   <button type="submit" (click)="onLogOut()">Logout</button>
 </div>
 <br>

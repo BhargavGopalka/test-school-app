@@ -33,15 +33,12 @@ export class ApiManagerService {
   /* Reload Components */
 
   getLink(): Observable<string> {
-    if (this.reloadComponents.getValue() === '') {
-      this.reloadComponents = new BehaviorSubject(sessionStorage.getItem('RouteLink') || '');
-    }
     return this.reloadComponents.asObservable();
   }
 
   setLink(value: string) {
     const currentRouter = sessionStorage.getItem('RouteLink');
-    console.log(currentRouter);
+    // console.log(currentRouter);
     if (currentRouter === value) {
       this.reloadComponents.next(value);
     }

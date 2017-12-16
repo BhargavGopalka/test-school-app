@@ -33,14 +33,11 @@ export class ClassesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.initialMethods();
     this.reloadClasses();
   }
 
   ngOnDestroy() {
-    if (this.refreshPage) {
-      this.refreshPage.unsubscribe();
-    }
+    this.refreshPage.unsubscribe();
   }
 
   initialMethods() {

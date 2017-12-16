@@ -15,7 +15,7 @@
       <option *ngFor="let department of departmentList" value="{{department._id}}">{{department.name}}</option>
     </select>
 
-    <button type="button" (click)="onClickSearchButton()">Search</button>
+    <button appDebounceClick (debounceClick)="onClickSearchButton()" [debounceTime]="300">Search</button>
     <button type="reset" (click)="onClear()">Clear</button>
   </div>
 </div>
@@ -46,7 +46,9 @@
       </td>
       <td>{{professor.approveStatus}}</td>
       <td>
-        <button (click)="preventMultipleClick ? onChangeStatus(professor) : null">{{professor.isEnable}}</button>
+        <button appDebounceClick (debounceClick)="onChangeStatus(professor)" [debounceTime]="300">
+          {{professor.isEnable}}
+        </button>
       </td>
       <td>
         <button (click)="onEditViewButtonClick(professor, 'Update')">Edit</button>

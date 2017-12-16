@@ -8,7 +8,7 @@
     <br>
 
 
-    <form [formGroup]="profileForm" (submit)="onUpdateAdminData(profileForm.value, profileForm.valid)">
+    <form [formGroup]="profileForm">
 
       <div>
         <a class="nameField">First Name:</a>
@@ -56,7 +56,9 @@
       <br>
 
       <div>
-        <button type="submit">Update</button>
+        <button type="submit" appDebounceClick (debounceClick)="onUpdateAdminData(profileForm.value, profileForm.valid)"
+                [debounceTime]="500">Update
+        </button>
         <button type="button" (click)="onCancelProfileForm()">Cancel</button>
       </div>
       <br>

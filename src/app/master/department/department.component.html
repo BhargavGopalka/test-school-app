@@ -40,7 +40,7 @@
       <td>{{i + 1}}</td>
       <td>{{dept.name}}</td>
       <td>
-        <button (click)="onChangeStatus(dept)">{{dept.isEnable}}</button>
+        <button appDebounceClick (debounceClick)="onChangeStatus(dept)" [debounceTime]="500">{{dept.isEnable}}</button>
       </td>
       <td>
         <button (click)="onAddEditButtonClick(dept)">Edit</button>

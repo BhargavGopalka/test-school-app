@@ -4,7 +4,7 @@ import {ApiManagerService} from '../../utility/api-manager/api-manager.service';
 import {API, Constant} from '../../utility/constants/constants';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {ISubscription} from "rxjs/Subscription";
+import {ISubscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-department',
@@ -33,14 +33,11 @@ export class DepartmentComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.initialMethods();
     this.reloadDepartment();
   }
 
   ngOnDestroy() {
-    if (this.refreshPage) {
-      this.refreshPage.unsubscribe();
-    }
+    this.refreshPage.unsubscribe();
   }
 
   initialMethods() {
